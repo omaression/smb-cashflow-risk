@@ -14,8 +14,8 @@
 ## Milestone 2 — backend baseline
 - [x] FastAPI app setup
 - [x] Config/settings module
-- [ ] SQLAlchemy models or equivalent persistence layer
-- [ ] CSV ingestion path
+- [x] SQLAlchemy models or equivalent persistence layer
+- [x] CSV ingestion path
 - [x] Dashboard summary endpoint
 - [x] Invoice risk list endpoint
 - [ ] Cash forecast endpoint
