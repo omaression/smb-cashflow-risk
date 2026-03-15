@@ -1,0 +1,3 @@
+external_payment_id,external_invoice_id,external_customer_id,payment_date,amount,currency,payment_method,reference
+PAY-7001,INV-1002,CUST-002,2026-03-01,15000,USD,ACH,ACH-993201
+PAY-7002,INV-1002,CUST-002,2026-03-08,5000,USD,Wire,WIRE-11082

@@ -1,0 +1,4 @@
+snapshot_date,currency,opening_balance,cash_in,cash_out,closing_balance
+2026-03-01,USD,95000,18000,22000,91000
+2026-03-02,USD,91000,12000,15000,88000
+2026-03-03,USD,88000,24000,17000,95000

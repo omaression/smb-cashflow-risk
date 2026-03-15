@@ -1,0 +1,4 @@
+external_customer_id,name,industry,segment,country,payment_terms_days,credit_limit,is_active
+CUST-001,Northstar Dental Group,Healthcare,Mid-Market,US,30,75000,true
+CUST-002,Riverbend Industrial Supply,Manufacturing,SMB,US,45,120000,true
+CUST-003,Summit Office Interiors,Commercial Services,SMB,US,30,40000,true
