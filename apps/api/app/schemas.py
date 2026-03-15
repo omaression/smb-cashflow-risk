@@ -7,6 +7,19 @@ class HealthResponse(BaseModel):
     status: str
 
 
+class IngestRowError(BaseModel):
+    row_number: int
+    message: str
+
+
+class IngestResponse(BaseModel):
+    entity_type: str
+    imported: int
+    updated: int
+    rejected: int
+    errors: list[IngestRowError]
+
+
 class DashboardSummaryResponse(BaseModel):
     total_ar: float
     overdue_ar: float
