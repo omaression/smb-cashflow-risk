@@ -12,12 +12,12 @@
 - [ ] Decide exact app scaffolding and package layout
 
 ## Milestone 2 — backend baseline
-- [ ] FastAPI app setup
-- [ ] Config/settings module
+- [x] FastAPI app setup
+- [x] Config/settings module
 - [ ] SQLAlchemy models or equivalent persistence layer
 - [ ] CSV ingestion path
-- [ ] Dashboard summary endpoint
-- [ ] Invoice risk list endpoint
+- [x] Dashboard summary endpoint
+- [x] Invoice risk list endpoint
 - [ ] Cash forecast endpoint
 
 ## Milestone 3 — frontend baseline
