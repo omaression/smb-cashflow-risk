@@ -4,17 +4,26 @@ from decimal import Decimal
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.models import Customer, Invoice, Payment
-
-RISKY_STATUSES = {"sent", "partially_paid"}
+from app.models import Customer, DailyCashSnapshot, Invoice
 
 
 def _overdue_days(today: date, due_date: date) -> int:
     return max((today - due_date).days, 0)
 
 
+def _resolve_today(session: Session, today: date | None = None) -> date:
+    if today is not None:
+        return today
+
+    latest_snapshot_date = session.scalar(select(func.max(DailyCashSnapshot.snapshot_date)))
+    if latest_snapshot_date is not None:
+        return latest_snapshot_date
+
+    return date.today()
+
+
 def build_dashboard_summary(session: Session, today: date | None = None) -> dict:
-    today = today or date.today()
+    today = _resolve_today(session, today)
 
     open_statuses = ("sent", "partially_paid")
 
@@ -70,15 +79,13 @@ def build_dashboard_summary(session: Session, today: date | None = None) -> dict
 
 
 def project_cash_balance(session: Session, horizon_days: int, today: date | None = None) -> dict:
-    today = today or date.today()
-
-    from app.models import DailyCashSnapshot  # local import to keep service module simple
-
     snapshot = session.execute(
         select(DailyCashSnapshot)
         .order_by(DailyCashSnapshot.snapshot_date.desc())
         .limit(1)
     ).scalar_one_or_none()
+
+    today = _resolve_today(session, today)
 
     base_balance = snapshot.closing_balance if snapshot else Decimal("0")
 
@@ -106,10 +113,13 @@ def project_cash_balance(session: Session, horizon_days: int, today: date | None
         expected_inflows += invoice.outstanding_amount * probability
         downside_inflows += invoice.outstanding_amount * min(probability, Decimal("0.50"))
 
-    recent_payments = session.scalar(
-        select(func.coalesce(func.sum(Payment.amount), 0)).where(Payment.payment_date >= today - timedelta(days=30))
+    recent_cash_out_total = session.scalar(
+        select(func.coalesce(func.sum(DailyCashSnapshot.cash_out), 0)).where(
+            DailyCashSnapshot.snapshot_date >= today - timedelta(days=30),
+            DailyCashSnapshot.snapshot_date <= today,
+        )
     ) or Decimal("0")
-    average_daily_outflow = recent_payments / Decimal("30") if recent_payments else Decimal("0")
+    average_daily_outflow = recent_cash_out_total / Decimal("30") if recent_cash_out_total else Decimal("0")
     projected_outflows = average_daily_outflow * Decimal(str(horizon_days))
 
     return {

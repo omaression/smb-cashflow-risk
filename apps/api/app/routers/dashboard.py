@@ -1,5 +1,3 @@
-from datetime import date
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -12,4 +10,4 @@ router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
 @router.get("/summary", response_model=DashboardSummaryResponse)
 def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummaryResponse:
-    return DashboardSummaryResponse(**build_dashboard_summary(db, today=date(2026, 3, 15)))
+    return DashboardSummaryResponse(**build_dashboard_summary(db))

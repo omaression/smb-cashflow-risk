@@ -1,5 +1,3 @@
-from datetime import date
-
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
@@ -15,4 +13,4 @@ def get_cash_forecast(
     horizon_days: int = Query(7, ge=1, le=90),
     db: Session = Depends(get_db),
 ) -> CashForecastResponse:
-    return CashForecastResponse(**project_cash_balance(db, horizon_days=horizon_days, today=date(2026, 3, 15)))
+    return CashForecastResponse(**project_cash_balance(db, horizon_days=horizon_days))
