@@ -29,6 +29,17 @@ class DashboardSummaryResponse(BaseModel):
     projected_cash_balances: dict[str, float]
 
 
+class CashForecastResponse(BaseModel):
+    as_of_date: str
+    horizon_days: int
+    base_balance: float
+    expected_inflows: float
+    downside_inflows: float
+    projected_outflows: float
+    projected_closing_balance: float
+    downside_closing_balance: float
+
+
 class InvoiceRiskItem(BaseModel):
     invoice_id: str
     customer_name: str
