@@ -72,7 +72,7 @@ Steps:
 - [x] Sample cash snapshots CSV
 - [x] CSV validators and ingestion path
 - [ ] Processed demo dataset generation script
-- [ ] Feature dataset builder for modeling
+- [x] Feature dataset builder for modeling
 - [ ] Data quality checks for missing/invalid finance records
 
 ### Backend API
@@ -88,11 +88,11 @@ Steps:
 - [ ] Stable response fixtures/examples for docs
 
 ### Analytics / ML
-- [ ] Baseline receivables feature engineering
-- [ ] Label definition script for `is_late_15`
-- [ ] Rule-based or baseline probability scorer
-- [ ] Reason-code generation
-- [ ] Collection priority ranking formula
+- [x] Baseline receivables feature engineering
+- [x] Label definition script for `is_late_15`
+- [x] Rule-based or baseline probability scorer
+- [x] Reason-code generation
+- [x] Collection priority ranking formula
 - [ ] Evaluation notebook or report
 - [ ] Model versioning conventions
 

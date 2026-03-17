@@ -33,6 +33,7 @@
 
 ## Milestone 4 — scoring + explanations
 - [x] Baseline risk feature engineering
+- [x] Label definition script / dataset builder
 - [ ] Late-payment model
 - [x] Reason-code generation
 - [x] Collection priority ranking
