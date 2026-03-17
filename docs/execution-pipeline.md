@@ -97,11 +97,11 @@ Steps:
 - [ ] Model versioning conventions
 
 ### Frontend
-- [ ] Next.js app scaffolded
-- [ ] Dashboard shell and layout
-- [ ] Summary cards wired to API
-- [ ] Invoice risk table wired to API
-- [ ] Cash forecast chart wired to API
+- [x] Next.js app scaffolded
+- [x] Dashboard shell and layout
+- [x] Summary cards wired to API
+- [x] Invoice risk table wired to API
+- [x] Cash forecast chart wired to API
 - [ ] Customer detail page
 - [ ] Empty/loading/error states
 - [ ] Portfolio-ready visual polish

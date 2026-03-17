@@ -23,11 +23,11 @@
 - [x] Customer detail endpoint
 
 ## Milestone 3 — frontend baseline
-- [ ] Next.js app setup
-- [ ] Dashboard shell
-- [ ] Summary cards
-- [ ] Invoice risk table
-- [ ] Cash forecast chart
+- [x] Next.js app setup
+- [x] Dashboard shell
+- [x] Summary cards
+- [x] Invoice risk table
+- [x] Cash forecast chart
 - [ ] Customer detail page
 
 ## Milestone 4 — scoring + explanations
