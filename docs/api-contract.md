@@ -31,6 +31,10 @@ Query params:
 - `page_size`
 - `sort_by`
 
+Current MVP behavior:
+- returns open invoices ranked by a rule-based collections priority score
+- score combines outstanding exposure, overdue severity, and late-payment probability
+
 Each item should include:
 - invoice id
 - customer

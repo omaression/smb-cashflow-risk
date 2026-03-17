@@ -34,10 +34,10 @@ def score_invoice(invoice: Invoice, customer: Customer, as_of: date) -> tuple[De
     if invoice.outstanding_amount == invoice.total_amount:
         reasons.append("no_partial_payments_recorded")
 
-    if probability >= Decimal("0.80"):
+    if probability >= Decimal("0.75"):
         bucket = "high"
         action = "call accounts payable and escalate with a dated payment commitment request"
-    elif probability >= Decimal("0.55"):
+    elif probability >= Decimal("0.50"):
         bucket = "medium"
         action = "send reminder with invoice backup and monitor within 3 business days"
     else:

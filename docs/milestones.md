@@ -31,10 +31,10 @@
 - [x] Customer detail page
 
 ## Milestone 4 — scoring + explanations
-- [ ] Baseline risk feature engineering
+- [x] Baseline risk feature engineering
 - [ ] Late-payment model
-- [ ] Reason-code generation
-- [ ] Collection priority ranking
+- [x] Reason-code generation
+- [x] Collection priority ranking
 
 ## Milestone 5 — polish
 - [ ] Testing

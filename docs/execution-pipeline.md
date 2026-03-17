@@ -174,6 +174,13 @@ Copy this for each task:
    - deployment notes
    - polished writeup
 
+### Recently completed
+- Backend cash forecast
+- Backend detail endpoints
+- Frontend dashboard shell
+- Frontend customer detail page
+- Rule-based receivables ranking and dashboard summary services
+
 ## 6. Done criteria for each slice
 A slice is done only when:
 - tests pass

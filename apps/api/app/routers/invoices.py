@@ -1,40 +1,30 @@
-from datetime import date
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.schemas import InvoiceDetailResponse, InvoiceRiskItem, PaymentHistoryItemResponse
 from app.services.details import get_invoice_detail
+from app.services.portfolio import rank_open_invoices
 
 router = APIRouter(prefix="/invoices", tags=["invoices"])
 
 
 @router.get("/risk", response_model=list[InvoiceRiskItem])
-def list_invoice_risk() -> list[InvoiceRiskItem]:
+def list_invoice_risk(db: Session = Depends(get_db)) -> list[InvoiceRiskItem]:
+    ranked = rank_open_invoices(db)
     return [
         InvoiceRiskItem(
-            invoice_id="INV-1001",
-            customer_name="Northstar Dental Group",
-            amount=12720.0,
-            due_date=date(2026, 2, 9),
-            overdue_days=35,
-            late_payment_probability=0.82,
-            risk_bucket="high",
-            top_reason_codes=["customer_historical_late_ratio", "invoice_overdue_days"],
-            recommended_action="send escalation email and call accounts payable",
-        ),
-        InvoiceRiskItem(
-            invoice_id="INV-1003",
-            customer_name="Summit Office Interiors",
-            amount=9010.0,
-            due_date=date(2026, 3, 4),
-            overdue_days=11,
-            late_payment_probability=0.61,
-            risk_bucket="medium",
-            top_reason_codes=["recent_payment_slowdown", "customer_concentration_risk"],
-            recommended_action="send reminder and monitor for 3 business days",
-        ),
+            invoice_id=item.invoice_id,
+            customer_name=item.customer_name,
+            amount=float(item.amount),
+            due_date=item.due_date,
+            overdue_days=item.overdue_days,
+            late_payment_probability=float(item.late_payment_probability),
+            risk_bucket=item.risk_bucket,
+            top_reason_codes=item.top_reason_codes,
+            recommended_action=item.recommended_action,
+        )
+        for item in ranked
     ]
 
 
