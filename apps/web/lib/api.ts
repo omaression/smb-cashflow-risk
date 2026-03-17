@@ -19,6 +19,32 @@ export type InvoiceRiskItem = {
   recommended_action: string;
 };
 
+export type CustomerOpenInvoice = {
+  invoice_id: string;
+  total_amount: number;
+  outstanding_amount: number;
+  due_date: string;
+  status: string;
+  late_payment_probability: number;
+  risk_bucket: "low" | "medium" | "high";
+};
+
+export type CustomerDetail = {
+  customer_id: string;
+  customer_name: string;
+  industry: string | null;
+  segment: string | null;
+  payment_terms_days: number | null;
+  credit_limit: number | null;
+  open_exposure: number;
+  open_invoice_count: number;
+  overdue_invoice_count: number;
+  average_days_overdue: number;
+  late_payment_ratio: number;
+  top_recommendation: string;
+  open_invoices: CustomerOpenInvoice[];
+};
+
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000/api/v1";
 
 async function fetchJson<T>(path: string): Promise<T> {
@@ -35,4 +61,8 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
 
 export async function getInvoiceRisk(): Promise<InvoiceRiskItem[]> {
   return fetchJson<InvoiceRiskItem[]>("/invoices/risk");
+}
+
+export async function getCustomerDetail(customerId: string): Promise<CustomerDetail> {
+  return fetchJson<CustomerDetail>(`/customers/${customerId}`);
 }
