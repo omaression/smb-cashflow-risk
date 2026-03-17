@@ -29,6 +29,7 @@
 - [x] Invoice risk table
 - [x] Cash forecast chart
 - [x] Customer detail page
+- [x] Invoice detail page
 
 ## Milestone 4 — scoring + explanations
 - [x] Baseline risk feature engineering

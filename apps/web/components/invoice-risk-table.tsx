@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { InvoiceRiskItem } from "@/lib/api";
 
 export function InvoiceRiskTable({ invoices }: { invoices: InvoiceRiskItem[] }) {
@@ -20,7 +22,9 @@ export function InvoiceRiskTable({ invoices }: { invoices: InvoiceRiskItem[] }) 
         <tbody>
           {invoices.map((invoice) => (
             <tr key={invoice.invoice_id}>
-              <td>{invoice.invoice_id}</td>
+              <td>
+                <Link href={`/invoices/${invoice.invoice_id}`}>{invoice.invoice_id}</Link>
+              </td>
               <td>{invoice.customer_name}</td>
               <td>${invoice.amount.toLocaleString()}</td>
               <td>

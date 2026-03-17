@@ -19,6 +19,32 @@ export type InvoiceRiskItem = {
   recommended_action: string;
 };
 
+export type InvoicePaymentHistoryItem = {
+  payment_date: string;
+  amount: number;
+  payment_method: string | null;
+  reference: string | null;
+};
+
+export type InvoiceDetail = {
+  invoice_id: string;
+  customer_id: string;
+  customer_name: string;
+  invoice_date: string;
+  due_date: string;
+  currency: string;
+  total_amount: number;
+  outstanding_amount: number;
+  amount_paid: number;
+  status: string;
+  overdue_days: number;
+  payment_history: InvoicePaymentHistoryItem[];
+  late_payment_probability: number;
+  risk_bucket: "low" | "medium" | "high";
+  top_reason_codes: string[];
+  recommended_action: string;
+};
+
 export type CustomerOpenInvoice = {
   invoice_id: string;
   total_amount: number;
@@ -61,6 +87,10 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
 
 export async function getInvoiceRisk(): Promise<InvoiceRiskItem[]> {
   return fetchJson<InvoiceRiskItem[]>("/invoices/risk");
+}
+
+export async function getInvoiceDetail(invoiceId: string): Promise<InvoiceDetail> {
+  return fetchJson<InvoiceDetail>(`/invoices/${invoiceId}`);
 }
 
 export async function getCustomerDetail(customerId: string): Promise<CustomerDetail> {

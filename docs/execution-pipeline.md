@@ -103,6 +103,7 @@ Steps:
 - [x] Invoice risk table wired to API
 - [x] Cash forecast chart wired to API
 - [x] Customer detail page
+- [x] Invoice detail page
 - [ ] Empty/loading/error states
 - [ ] Portfolio-ready visual polish
 
