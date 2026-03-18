@@ -3,10 +3,13 @@ import { EmptyState } from "@/components/empty-state";
 import { InvoiceRiskTable } from "@/components/invoice-risk-table";
 import { SummaryCards } from "@/components/summary-cards";
 import { TopCustomers } from "@/components/top-customers";
-import { getDashboardSummary, getInvoiceRisk } from "@/lib/api";
+import { getBrowserApiLinks, getDashboardSummary, getInvoiceRisk } from "@/lib/api";
+
+export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const [summary, invoices] = await Promise.all([getDashboardSummary(), getInvoiceRisk()]);
+  const links = getBrowserApiLinks();
 
   return (
     <main>
@@ -19,12 +22,16 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="link-row">
-          <a className="link-chip" href="http://127.0.0.1:8000/docs" target="_blank" rel="noreferrer">
-            API docs
-          </a>
-          <a className="link-chip" href="http://127.0.0.1:8000/api/v1/dashboard/summary" target="_blank" rel="noreferrer">
-            Summary JSON
-          </a>
+          {links.docs ? (
+            <a className="link-chip" href={links.docs} target="_blank" rel="noreferrer">
+              API docs
+            </a>
+          ) : null}
+          {links.summary ? (
+            <a className="link-chip" href={links.summary} target="_blank" rel="noreferrer">
+              Summary JSON
+            </a>
+          ) : null}
         </div>
       </section>
 

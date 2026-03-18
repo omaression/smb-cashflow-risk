@@ -1,3 +1,8 @@
+const browserApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const serverApiBaseUrl = process.env.INTERNAL_API_BASE_URL ?? process.env.API_BASE_URL;
+
+const apiBaseUrl = serverApiBaseUrl ?? browserApiBaseUrl;
+
 export class ApiError extends Error {
   status: number;
 
@@ -81,14 +86,39 @@ export type CustomerDetail = {
   open_invoices: CustomerOpenInvoice[];
 };
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000/api/v1";
+function getBrowserApiBaseUrl(): string | undefined {
+  return browserApiBaseUrl;
+}
+
+function getBrowserApiOrigin(): string | undefined {
+  if (!browserApiBaseUrl) {
+    return undefined;
+  }
+
+  try {
+    return new URL(browserApiBaseUrl).origin;
+  } catch {
+    return undefined;
+  }
+}
 
 async function fetchJson<T>(path: string): Promise<T> {
+  if (!apiBaseUrl) {
+    throw new Error("API base URL is not configured. Set INTERNAL_API_BASE_URL (server) or NEXT_PUBLIC_API_BASE_URL (browser).");
+  }
+
   const response = await fetch(`${apiBaseUrl}${path}`, { cache: "no-store" });
   if (!response.ok) {
     throw new ApiError(response.status, `API request failed for ${path}: ${response.status}`);
   }
   return (await response.json()) as T;
+}
+
+export function getBrowserApiLinks() {
+  const docs = getBrowserApiOrigin() ? `${getBrowserApiOrigin()}/docs` : undefined;
+  const summary = getBrowserApiBaseUrl() ? `${getBrowserApiBaseUrl()}/dashboard/summary` : undefined;
+
+  return { docs, summary };
 }
 
 export async function getDashboardSummary(): Promise<DashboardSummary> {
