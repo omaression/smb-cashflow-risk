@@ -32,8 +32,8 @@ for entity in customers invoices payments cash_snapshots; do
     continue
   fi
 
-  imported=$(printf '%s' "$resp" | grep -o '"imported":[0-9]*' | head -1 | cut -d: -f2)
-  rejected=$(printf '%s' "$resp" | grep -o '"rejected":[0-9]*' | head -1 | cut -d: -f2)
+  imported=$(printf '%s' "$resp" | grep -oE '"imported"[[:space:]]*:[[:space:]]*[0-9]+' | head -1 | grep -oE '[0-9]+')
+  rejected=$(printf '%s' "$resp" | grep -oE '"rejected"[[:space:]]*:[[:space:]]*[0-9]+' | head -1 | grep -oE '[0-9]+')
   imported=${imported:-unknown}
   rejected=${rejected:-unknown}
 

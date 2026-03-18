@@ -45,6 +45,7 @@ This imports sample CSV files from `data/raw/` through the API import endpoint.
 ## Requirements
 - Docker Engine 24+ and Docker Compose v2
 - No local Python or Node.js installation needed
+- `curl` is required on the host to run `scripts/seed-docker.sh`
 - The `str | None` union syntax in Python source requires Python 3.10+; the container uses 3.12 so this is handled automatically
 
 ## Production considerations
@@ -68,5 +69,4 @@ After startup:
 curl http://localhost:8000/healthz
 curl http://localhost:8000/api/v1/dashboard/summary
 open http://localhost:3000
-```ost:3000
 ```
