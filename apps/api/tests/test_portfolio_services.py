@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from app.ingestion import ingest_csv_file
-from app.services.portfolio import build_dashboard_summary, rank_open_invoices
+from app.services.portfolio import build_dashboard_summary, rank_open_invoices, resolve_portfolio_as_of
 
 DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
 
@@ -11,6 +11,12 @@ def _load_seed_data(db_session) -> None:
     ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
     ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
     ingest_csv_file("cash_snapshots", (DATA_DIR / "sample_cash_snapshots.csv").read_bytes(), db_session)
+
+
+def test_resolve_portfolio_as_of_uses_latest_observed_portfolio_date(db_session) -> None:
+    _load_seed_data(db_session)
+
+    assert str(resolve_portfolio_as_of(db_session)) == "2026-03-08"
 
 
 def test_rank_open_invoices_orders_by_priority(db_session) -> None:

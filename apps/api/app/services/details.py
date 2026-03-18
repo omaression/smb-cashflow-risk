@@ -7,7 +7,8 @@ from decimal import Decimal
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
-from app.models import Customer, Invoice, Payment
+from app.models import Customer, Invoice
+from app.services.portfolio import resolve_portfolio_as_of
 from app.services.risk import score_invoice
 
 
@@ -67,13 +68,6 @@ class CustomerDetailResult:
     open_invoices: list[CustomerOpenInvoiceItem]
 
 
-def _resolve_as_of_date(session: Session) -> date:
-    latest_payment = session.scalar(select(Payment.payment_date).order_by(Payment.payment_date.desc()).limit(1))
-    latest_due_date = session.scalar(select(Invoice.due_date).order_by(Invoice.due_date.desc()).limit(1))
-    candidates = [candidate for candidate in [latest_payment, latest_due_date] if candidate is not None]
-    return max(candidates) if candidates else date.today()
-
-
 def get_invoice_detail(session: Session, external_invoice_id: str) -> InvoiceDetailResult | None:
     invoice = session.scalar(
         select(Invoice)
@@ -83,7 +77,7 @@ def get_invoice_detail(session: Session, external_invoice_id: str) -> InvoiceDet
     if invoice is None:
         return None
 
-    as_of = _resolve_as_of_date(session)
+    as_of = resolve_portfolio_as_of(session)
     customer = invoice.customer
     probability, bucket, reasons, action = score_invoice(invoice, customer, as_of)
     payment_history = [
@@ -126,7 +120,7 @@ def get_customer_detail(session: Session, external_customer_id: str) -> Customer
     if customer is None:
         return None
 
-    as_of = _resolve_as_of_date(session)
+    as_of = resolve_portfolio_as_of(session)
     open_invoices: list[CustomerOpenInvoiceItem] = []
     overdue_days_accumulator = 0
     overdue_count = 0
@@ -155,7 +149,9 @@ def get_customer_detail(session: Session, external_customer_id: str) -> Customer
             )
             top_recommendation = action
 
-    open_exposure = sum((invoice.outstanding_amount for invoice in customer.invoices if invoice.outstanding_amount > 0), Decimal("0.00"))
+    open_exposure = sum(
+        (invoice.outstanding_amount for invoice in customer.invoices if invoice.outstanding_amount > 0), Decimal("0.00")
+    )
     invoice_count = len(customer.invoices)
     average_days_overdue = overdue_days_accumulator / overdue_count if overdue_count else 0.0
     late_payment_ratio = late_like_count / invoice_count if invoice_count else 0.0
