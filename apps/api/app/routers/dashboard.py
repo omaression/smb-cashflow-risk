@@ -1,20 +1,13 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
+from app.database import get_db
 from app.schemas import DashboardSummaryResponse
+from app.services.dashboard import build_dashboard_summary
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
 
 @router.get("/summary", response_model=DashboardSummaryResponse)
-def get_dashboard_summary() -> DashboardSummaryResponse:
-    return DashboardSummaryResponse(
-        total_ar=51410.0,
-        overdue_ar=27400.0,
-        open_invoice_count=3,
-        risky_invoice_count=2,
-        top_risky_customers=[
-            "Riverbend Industrial Supply",
-            "Northstar Dental Group",
-        ],
-        projected_cash_balances={"7": 90500.0, "14": 97800.0, "30": 110400.0},
-    )
+def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummaryResponse:
+    return DashboardSummaryResponse(**build_dashboard_summary(db))

@@ -18,7 +18,7 @@
 - [x] CSV ingestion path
 - [x] Dashboard summary endpoint
 - [x] Invoice risk list endpoint
-- [ ] Cash forecast endpoint
+- [x] Cash forecast endpoint
 
 ## Milestone 3 — frontend baseline
 - [ ] Next.js app setup
