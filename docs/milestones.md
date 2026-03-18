@@ -40,7 +40,7 @@
 - [x] Collection priority ranking
 
 ## Milestone 5 — polish
-- [ ] Testing
-- [ ] Seed/demo data
+- [x] Testing
+- [x] Seed/demo data
 - [ ] Deployment notes
-- [ ] Portfolio writeup
+- [x] Portfolio writeup

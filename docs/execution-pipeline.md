@@ -111,10 +111,10 @@ Steps:
 - [x] Test harness runs cleanly from repo commands
 - [x] API tests cover happy path + bad inputs
 - [x] Forecast tests validate business logic
-- [ ] Basic frontend smoke tests
+- [x] Basic frontend smoke tests
 - [ ] Docker/dev environment documented
 - [ ] Deployment notes added
-- [ ] Portfolio writeup added
+- [x] Portfolio writeup added
 
 ## 4. Slice-by-slice pipeline template
 Copy this for each task:

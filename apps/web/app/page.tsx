@@ -1,4 +1,5 @@
 import { CashForecastChart } from "@/components/cash-forecast-chart";
+import { EmptyState } from "@/components/empty-state";
 import { InvoiceRiskTable } from "@/components/invoice-risk-table";
 import { SummaryCards } from "@/components/summary-cards";
 import { TopCustomers } from "@/components/top-customers";
@@ -30,12 +31,31 @@ export default async function DashboardPage() {
       <SummaryCards summary={summary} />
 
       <section className="grid two-col" style={{ marginTop: 16 }}>
-        <CashForecastChart balances={summary.projected_cash_balances} />
-        <TopCustomers customers={summary.top_risky_customers} />
+        {Object.keys(summary.projected_cash_balances).length > 0 ? (
+          <CashForecastChart balances={summary.projected_cash_balances} />
+        ) : (
+          <EmptyState title="No forecast available" body="Load snapshots and invoices to generate a short-term cash view." />
+        )}
+
+        {summary.top_risky_customers.length > 0 ? (
+          <TopCustomers customers={summary.top_risky_customers} />
+        ) : (
+          <EmptyState
+            title="No risky customers yet"
+            body="Once receivables are loaded, counterparties with meaningful exposure will appear here."
+          />
+        )}
       </section>
 
       <section style={{ marginTop: 16 }}>
-        <InvoiceRiskTable invoices={invoices} />
+        {invoices.length > 0 ? (
+          <InvoiceRiskTable invoices={invoices} />
+        ) : (
+          <EmptyState
+            title="No invoices loaded"
+            body="Import customer, invoice, and payment CSVs to populate the collections queue."
+          />
+        )}
       </section>
     </main>
   );

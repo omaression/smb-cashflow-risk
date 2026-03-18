@@ -114,3 +114,7 @@ A reviewer should be able to:
 - see ranked risky invoices/customers
 - understand why the model flagged them
 - understand the business value in under 2 minutes
+
+## Portfolio docs
+- architecture tradeoffs: `docs/architecture-tradeoffs.md`
+- portfolio writeup: `docs/portfolio-writeup.md`

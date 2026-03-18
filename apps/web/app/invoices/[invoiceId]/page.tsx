@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { EmptyState } from "@/components/empty-state";
 import { getInvoiceDetail } from "@/lib/api";
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ invoiceId: string }> }) {
@@ -65,11 +66,9 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             </ul>
             <p className="muted">Status: {invoice.status} · {invoice.overdue_days} days overdue</p>
           </div>
-          <div className="panel">
-            <h2>Payment history</h2>
-            {invoice.payment_history.length === 0 ? (
-              <p className="muted">No payments recorded yet.</p>
-            ) : (
+          {invoice.payment_history.length > 0 ? (
+            <div className="panel">
+              <h2>Payment history</h2>
               <table className="table">
                 <thead>
                   <tr>
@@ -90,8 +89,13 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
                   ))}
                 </tbody>
               </table>
-            )}
-          </div>
+            </div>
+          ) : (
+            <EmptyState
+              title="No payments recorded"
+              body="This invoice has not received any payments yet, so collection action still matters."
+            />
+          )}
         </section>
       </main>
     );

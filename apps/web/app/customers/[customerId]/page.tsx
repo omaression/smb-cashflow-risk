@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { EmptyState } from "@/components/empty-state";
 import { getCustomerDetail } from "@/lib/api";
 
 export default async function CustomerDetailPage({ params }: { params: Promise<{ customerId: string }> }) {
@@ -50,35 +51,44 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
           </div>
         </section>
 
-        <section className="panel" style={{ marginTop: 16 }}>
-          <h2>Open invoices</h2>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Invoice</th>
-                <th>Total</th>
-                <th>Outstanding</th>
-                <th>Due</th>
-                <th>Status</th>
-                <th>Risk</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customer.open_invoices.map((invoice) => (
-                <tr key={invoice.invoice_id}>
-                  <td>{invoice.invoice_id}</td>
-                  <td>${invoice.total_amount.toLocaleString()}</td>
-                  <td>${invoice.outstanding_amount.toLocaleString()}</td>
-                  <td>{invoice.due_date}</td>
-                  <td>{invoice.status}</td>
-                  <td>
-                    <span className={`badge ${invoice.risk_bucket}`}>{invoice.risk_bucket}</span>
-                    <div className="muted">{Math.round(invoice.late_payment_probability * 100)}%</div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <section style={{ marginTop: 16 }}>
+          {customer.open_invoices.length > 0 ? (
+            <div className="panel">
+              <h2>Open invoices</h2>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Invoice</th>
+                    <th>Total</th>
+                    <th>Outstanding</th>
+                    <th>Due</th>
+                    <th>Status</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customer.open_invoices.map((invoice) => (
+                    <tr key={invoice.invoice_id}>
+                      <td>{invoice.invoice_id}</td>
+                      <td>${invoice.total_amount.toLocaleString()}</td>
+                      <td>${invoice.outstanding_amount.toLocaleString()}</td>
+                      <td>{invoice.due_date}</td>
+                      <td>{invoice.status}</td>
+                      <td>
+                        <span className={`badge ${invoice.risk_bucket}`}>{invoice.risk_bucket}</span>
+                        <div className="muted">{Math.round(invoice.late_payment_probability * 100)}%</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <EmptyState
+              title="No open invoices"
+              body="This customer currently has no receivables exposure in the loaded portfolio."
+            />
+          )}
         </section>
       </main>
     );
