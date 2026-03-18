@@ -2,7 +2,7 @@ from pathlib import Path
 
 from app.ingestion import ingest_csv_file
 from app.services.features import build_invoice_feature_rows
-from app.services.scoring import build_and_export_features, evaluate_baseline
+from app.services.scoring import build_and_export_features, evaluate_baseline, export_feature_rows_to_csv
 
 DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
 
@@ -28,6 +28,17 @@ def test_evaluate_baseline_scores_expected_invoice_order(db_session) -> None:
     assert evaluation.positive_labels == 1
     assert evaluation.predicted_positive == 2
     assert evaluation.recall == 1.0
+
+
+def test_export_feature_rows_to_csv_writes_header_for_empty_input(tmp_path) -> None:
+    output_path = tmp_path / "empty_invoice_features.csv"
+
+    written_path = export_feature_rows_to_csv([], output_path)
+
+    assert written_path == output_path
+    lines = output_path.read_text(encoding="utf-8").splitlines()
+    assert lines[0].startswith("invoice_id,customer_id,customer_name")
+    assert len(lines) == 1
 
 
 def test_build_and_export_features_writes_csv(db_session, tmp_path) -> None:

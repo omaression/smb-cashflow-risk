@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, fields
 from pathlib import Path
 import csv
 
@@ -106,8 +106,9 @@ def evaluate_baseline(rows: list[InvoiceFeatureRow]) -> tuple[list[BaselineScore
 def export_feature_rows_to_csv(rows: list[InvoiceFeatureRow], path: str | Path) -> Path:
     target_path = Path(path)
     target_path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [field.name for field in fields(InvoiceFeatureRow)]
     with target_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(asdict(rows[0]).keys()))
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
             writer.writerow(asdict(row))
