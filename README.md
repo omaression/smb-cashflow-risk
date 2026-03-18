@@ -118,3 +118,5 @@ A reviewer should be able to:
 ## Portfolio docs
 - architecture tradeoffs: `docs/architecture-tradeoffs.md`
 - portfolio writeup: `docs/portfolio-writeup.md`
+- deployment notes: `docs/deployment-notes.md`
+teup.md`

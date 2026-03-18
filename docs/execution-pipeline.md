@@ -112,8 +112,8 @@ Steps:
 - [x] API tests cover happy path + bad inputs
 - [x] Forecast tests validate business logic
 - [x] Basic frontend smoke tests
-- [ ] Docker/dev environment documented
-- [ ] Deployment notes added
+- [x] Docker/dev environment documented
+- [x] Deployment notes added
 - [x] Portfolio writeup added
 
 ## 4. Slice-by-slice pipeline template

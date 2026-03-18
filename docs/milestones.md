@@ -42,5 +42,5 @@
 ## Milestone 5 — polish
 - [x] Testing
 - [x] Seed/demo data
-- [ ] Deployment notes
+- [x] Deployment notes
 - [x] Portfolio writeup
