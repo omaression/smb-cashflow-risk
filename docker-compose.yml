@@ -11,6 +11,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d smb_cashflow_risk"]
       interval: 10s
@@ -30,16 +31,20 @@ services:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/smb_cashflow_risk
     ports:
       - "8000:8000"
+    volumes:
+      - ./data:/data:ro
 
   web:
     build:
       context: ./apps/web
       args:
-        NEXT_PUBLIC_API_BASE_URL: http://api:8000/api/v1
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
     container_name: smb-cashflow-risk-web
     restart: unless-stopped
     depends_on:
       - api
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
     ports:
       - "3000:3000"
 

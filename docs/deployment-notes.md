@@ -32,6 +32,11 @@ docker compose up --build
 - uses `NEXT_PUBLIC_API_BASE_URL`
 - serves production build on port 3000
 
+## Requirements
+- Docker Engine 24+ and Docker Compose v2
+- No local Python or Node.js installation needed
+- The `str | None` union syntax in Python source requires Python 3.10+; the container uses 3.12 so this is handled automatically
+
 ## Production considerations
 This stack is good for local demos and portfolio evaluation. Before real deployment, add:
 - migration workflow (Alembic or equivalent)
@@ -45,6 +50,16 @@ This stack is good for local demos and portfolio evaluation. Before real deploym
 For a portfolio deploy, the easiest path is:
 1. managed Postgres
 2. backend container on Render/Fly.io/Railway
+3. frontend on Vercel or container host
+
+## Smoke checks
+After startup:
+```bash
+curl http://localhost:8000/healthz
+curl http://localhost:8000/api/v1/dashboard/summary
+open http://localhost:3000
+```
+container on Render/Fly.io/Railway
 3. frontend on Vercel or container host
 
 ## Smoke checks
