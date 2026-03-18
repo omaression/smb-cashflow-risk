@@ -70,6 +70,13 @@ NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 ./scripts/demo.sh
 ```
 
+### Export invoice features for baseline modeling
+```bash
+./scripts/export-invoice-features.py
+# bootstraps a temporary SQLite demo DB from sample CSVs
+# writes data/processed/invoice_features.csv by default
+```
+
 ## Phase plan
 ### Phase 0 — foundation
 - define domain model

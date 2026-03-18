@@ -1,0 +1,4 @@
+invoice_id,customer_id,customer_name,invoice_date,due_date,amount,outstanding_amount,payment_terms_days,invoice_age_days,days_until_due,overdue_days,customer_invoice_count,customer_total_exposure,customer_open_exposure,customer_late_invoice_ratio,customer_average_days_late,payment_count,paid_amount,paid_ratio,is_open,is_late_15
+INV-1001,CUST-001,Northstar Dental Group,2026-01-10,2026-02-09,12720.00,12720.00,30,57,-27,27,1,12720.00,12720.00,0.0,0.0,0,0.00,0.0,True,1
+INV-1002,CUST-002,Riverbend Industrial Supply,2026-01-18,2026-03-04,29680.00,9680.00,45,49,-4,4,1,29680.00,9680.00,0.0,0.0,2,20000.00,0.67,True,0
+INV-1003,CUST-003,Summit Office Interiors,2026-02-02,2026-03-04,9010.00,9010.00,30,34,-4,4,1,9010.00,9010.00,0.0,0.0,0,0.00,0.0,True,0

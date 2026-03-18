@@ -71,7 +71,7 @@ Steps:
 - [x] Sample payments CSV
 - [x] Sample cash snapshots CSV
 - [x] CSV validators and ingestion path
-- [ ] Processed demo dataset generation script
+- [x] Processed demo dataset generation script
 - [x] Feature dataset builder for modeling
 - [ ] Data quality checks for missing/invalid finance records
 
