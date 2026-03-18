@@ -1,19 +1,4 @@
-from pathlib import Path
-
-from app.ingestion import ingest_csv_file
-
-DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
-
-
-def _load_seed_data(db_session) -> None:
-    ingest_csv_file("customers", (DATA_DIR / "sample_customers.csv").read_bytes(), db_session)
-    ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
-    ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
-
-
-def test_invoice_risk_endpoint_returns_ranked_results(client, db_session) -> None:
-    _load_seed_data(db_session)
-
+def test_invoice_risk_endpoint_returns_ranked_results(client, seed_data) -> None:
     response = client.get("/api/v1/invoices/risk")
     assert response.status_code == 200
     payload = response.json()

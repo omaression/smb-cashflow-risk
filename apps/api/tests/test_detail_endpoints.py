@@ -1,19 +1,4 @@
-from app.ingestion import ingest_csv_file
-
-
-def _load_seed_data(db_session) -> None:
-    from pathlib import Path
-
-    data_dir = Path(__file__).resolve().parents[3] / "data" / "raw"
-    ingest_csv_file("customers", (data_dir / "sample_customers.csv").read_bytes(), db_session)
-    ingest_csv_file("invoices", (data_dir / "sample_invoices.csv").read_bytes(), db_session)
-    ingest_csv_file("payments", (data_dir / "sample_payments.csv").read_bytes(), db_session)
-    ingest_csv_file("cash_snapshots", (data_dir / "sample_cash_snapshots.csv").read_bytes(), db_session)
-
-
-def test_invoice_detail_endpoint(client, db_session) -> None:
-    _load_seed_data(db_session)
-
+def test_invoice_detail_endpoint(client, seed_data) -> None:
     response = client.get("/api/v1/invoices/INV-1002")
     assert response.status_code == 200
     payload = response.json()
@@ -28,9 +13,7 @@ def test_invoice_detail_endpoint(client, db_session) -> None:
     assert payload["risk_bucket"] in {"low", "medium", "high"}
 
 
-def test_customer_detail_endpoint(client, db_session) -> None:
-    _load_seed_data(db_session)
-
+def test_customer_detail_endpoint(client, seed_data) -> None:
     response = client.get("/api/v1/customers/CUST-001")
     assert response.status_code == 200
     payload = response.json()

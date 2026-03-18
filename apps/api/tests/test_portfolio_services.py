@@ -1,28 +1,12 @@
-from pathlib import Path
-
-from app.ingestion import ingest_csv_file
 from app.services.portfolio import build_dashboard_summary, rank_open_invoices, resolve_portfolio_as_of
 
-DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
+
+def test_resolve_portfolio_as_of_uses_latest_observed_portfolio_date(seed_data) -> None:
+    assert str(resolve_portfolio_as_of(seed_data)) == "2026-03-08"
 
 
-def _load_seed_data(db_session) -> None:
-    ingest_csv_file("customers", (DATA_DIR / "sample_customers.csv").read_bytes(), db_session)
-    ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
-    ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
-    ingest_csv_file("cash_snapshots", (DATA_DIR / "sample_cash_snapshots.csv").read_bytes(), db_session)
-
-
-def test_resolve_portfolio_as_of_uses_latest_observed_portfolio_date(db_session) -> None:
-    _load_seed_data(db_session)
-
-    assert str(resolve_portfolio_as_of(db_session)) == "2026-03-08"
-
-
-def test_rank_open_invoices_orders_by_priority(db_session) -> None:
-    _load_seed_data(db_session)
-
-    ranked = rank_open_invoices(db_session)
+def test_rank_open_invoices_orders_by_priority(seed_data) -> None:
+    ranked = rank_open_invoices(seed_data)
 
     assert [item.invoice_id for item in ranked] == ["INV-1001", "INV-1002", "INV-1003"]
     assert ranked[0].risk_bucket == "high"
@@ -30,10 +14,8 @@ def test_rank_open_invoices_orders_by_priority(db_session) -> None:
     assert ranked[0].priority_score > ranked[1].priority_score > ranked[2].priority_score
 
 
-def test_build_dashboard_summary_uses_ranked_portfolio(db_session) -> None:
-    _load_seed_data(db_session)
-
-    summary = build_dashboard_summary(db_session)
+def test_build_dashboard_summary_uses_ranked_portfolio(seed_data) -> None:
+    summary = build_dashboard_summary(seed_data)
 
     assert float(summary.total_ar) == 31410.0
     assert float(summary.overdue_ar) == 31410.0

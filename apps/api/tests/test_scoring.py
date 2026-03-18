@@ -1,22 +1,10 @@
-from pathlib import Path
-
-from app.ingestion import ingest_csv_file
 from app.services.features import build_invoice_feature_rows
 from app.services.scoring import build_and_export_features, evaluate_baseline, export_feature_rows_to_csv
-
-DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
-
-
-def _load_seed_data(db_session) -> None:
-    ingest_csv_file("customers", (DATA_DIR / "sample_customers.csv").read_bytes(), db_session)
-    ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
-    ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
-    ingest_csv_file("cash_snapshots", (DATA_DIR / "sample_cash_snapshots.csv").read_bytes(), db_session)
+import pytest
 
 
-def test_evaluate_baseline_scores_expected_invoice_order(db_session) -> None:
-    _load_seed_data(db_session)
-    rows = build_invoice_feature_rows(db_session)
+def test_evaluate_baseline_scores_expected_invoice_order(seed_data) -> None:
+    rows = build_invoice_feature_rows(seed_data)
 
     scored_rows, evaluation = evaluate_baseline(rows)
     by_invoice = {row.invoice_id: row for row in scored_rows}
@@ -41,13 +29,18 @@ def test_export_feature_rows_to_csv_writes_header_for_empty_input(tmp_path) -> N
     assert len(lines) == 1
 
 
-def test_build_and_export_features_writes_csv(db_session, tmp_path) -> None:
-    _load_seed_data(db_session)
-
+def test_build_and_export_features_writes_csv(seed_data, tmp_path) -> None:
     output_path = tmp_path / "invoice_features.csv"
-    written_path = build_and_export_features(db_session, output_path)
+    written_path = build_and_export_features(seed_data, output_path)
 
     assert written_path == output_path
     text = output_path.read_text(encoding="utf-8")
     assert "invoice_id,customer_id,customer_name" in text
     assert "INV-1001" in text
+
+
+def test_build_and_export_features_raises_on_empty_db(db_session) -> None:
+    """Verify ValueError when no invoice features are available."""
+    import pytest
+    with pytest.raises(ValueError, match="no invoice features available"):
+        build_and_export_features(db_session, "/tmp/output.csv")

@@ -1,22 +1,8 @@
-from pathlib import Path
-
-from app.ingestion import ingest_csv_file
 from app.services.features import build_invoice_feature_rows
 
-DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
 
-
-def _load_seed_data(db_session) -> None:
-    ingest_csv_file("customers", (DATA_DIR / "sample_customers.csv").read_bytes(), db_session)
-    ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
-    ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
-    ingest_csv_file("cash_snapshots", (DATA_DIR / "sample_cash_snapshots.csv").read_bytes(), db_session)
-
-
-def test_build_invoice_feature_rows_returns_expected_derived_fields(db_session) -> None:
-    _load_seed_data(db_session)
-
-    rows = build_invoice_feature_rows(db_session)
+def test_build_invoice_feature_rows_returns_expected_derived_fields(seed_data) -> None:
+    rows = build_invoice_feature_rows(seed_data)
     assert len(rows) == 3
 
     by_invoice = {row.invoice_id: row for row in rows}
