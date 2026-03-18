@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { EmptyState } from "@/components/empty-state";
-import { getCustomerDetail } from "@/lib/api";
+import { ApiError, getCustomerDetail } from "@/lib/api";
 
 export default async function CustomerDetailPage({ params }: { params: Promise<{ customerId: string }> }) {
   const { customerId } = await params;
@@ -92,7 +92,10 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
         </section>
       </main>
     );
-  } catch {
-    notFound();
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      notFound();
+    }
+    throw error;
   }
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { EmptyState } from "@/components/empty-state";
-import { getInvoiceDetail } from "@/lib/api";
+import { ApiError, getInvoiceDetail } from "@/lib/api";
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ invoiceId: string }> }) {
   const { invoiceId } = await params;
@@ -99,7 +99,10 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
         </section>
       </main>
     );
-  } catch {
-    notFound();
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      notFound();
+    }
+    throw error;
   }
 }

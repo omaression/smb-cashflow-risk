@@ -1,3 +1,13 @@
+export class ApiError extends Error {
+  status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 export type DashboardSummary = {
   total_ar: number;
   overdue_ar: number;
@@ -76,7 +86,7 @@ const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:800
 async function fetchJson<T>(path: string): Promise<T> {
   const response = await fetch(`${apiBaseUrl}${path}`, { cache: "no-store" });
   if (!response.ok) {
-    throw new Error(`API request failed for ${path}: ${response.status}`);
+    throw new ApiError(response.status, `API request failed for ${path}: ${response.status}`);
   }
   return (await response.json()) as T;
 }
