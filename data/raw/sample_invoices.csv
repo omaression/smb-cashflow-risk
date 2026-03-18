@@ -1,4 +1,4 @@
 external_invoice_id,external_customer_id,invoice_date,due_date,currency,subtotal_amount,tax_amount,total_amount,outstanding_amount,status,payment_terms_days
 INV-1001,CUST-001,2026-01-10,2026-02-09,USD,12000,720,12720,12720,sent,30
-INV-1002,CUST-002,2026-01-18,2026-03-04,USD,28000,1680,29680,14680,partially_paid,45
+INV-1002,CUST-002,2026-01-18,2026-03-04,USD,28000,1680,29680,9680,partially_paid,45
 INV-1003,CUST-003,2026-02-02,2026-03-04,USD,8500,510,9010,9010,sent,30

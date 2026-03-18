@@ -1,4 +1,6 @@
 from collections.abc import Generator
+from pathlib import Path
+import sys
 
 import pytest
 from fastapi.testclient import TestClient
@@ -6,9 +8,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+API_ROOT = Path(__file__).resolve().parents[1]
+if str(API_ROOT) not in sys.path:
+    sys.path.insert(0, str(API_ROOT))
+
 from app.database import Base, get_db
 from app.models import Customer, DailyCashSnapshot, Invoice, Payment  # noqa: F401
 from app.main import app
+from app.ingestion import ingest_csv_file
 
 TEST_DATABASE_URL = "sqlite://"
 engine = create_engine(
@@ -18,6 +25,8 @@ engine = create_engine(
     future=True,
 )
 TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, class_=Session)
+
+DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "raw"
 
 
 @pytest.fixture(autouse=True)
@@ -49,3 +58,13 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
+
+@pytest.fixture()
+def seed_data(db_session: Session) -> Generator[Session, None, None]:
+    """Load sample CSV data into the test database."""
+    ingest_csv_file("customers", (DATA_DIR / "sample_customers.csv").read_bytes(), db_session)
+    ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
+    ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
+    ingest_csv_file("cash_snapshots", (DATA_DIR / "sample_cash_snapshots.csv").read_bytes(), db_session)
+    yield db_session

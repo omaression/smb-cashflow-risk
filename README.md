@@ -48,6 +48,35 @@ The MVP will:
 - `docs` — architecture, milestones, product notes
 - `sql` — schema and seed scripts
 
+## Local development
+### API
+```bash
+cd apps/api
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+### Web
+```bash
+cd apps/web
+npm install
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
+```
+
+### Demo helper
+```bash
+./scripts/demo.sh
+```
+
+### Export invoice features for baseline modeling
+```bash
+./scripts/export-invoice-features.py
+# bootstraps a temporary SQLite demo DB from sample CSVs
+# writes data/processed/invoice_features.csv by default
+```
+
 ## Phase plan
 ### Phase 0 — foundation
 - define domain model
@@ -85,3 +114,7 @@ A reviewer should be able to:
 - see ranked risky invoices/customers
 - understand why the model flagged them
 - understand the business value in under 2 minutes
+
+## Portfolio docs
+- architecture tradeoffs: `docs/architecture-tradeoffs.md`
+- portfolio writeup: `docs/portfolio-writeup.md`

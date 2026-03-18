@@ -31,6 +31,10 @@ Query params:
 - `page_size`
 - `sort_by`
 
+Current MVP behavior:
+- returns open invoices ranked by a rule-based collections priority score
+- score combines outstanding exposure, overdue severity, and late-payment probability
+
 Each item should include:
 - invoice id
 - customer
@@ -45,8 +49,16 @@ Each item should include:
 ### `GET /api/v1/invoices/{invoice_id}`
 Returns invoice detail, payment history, latest score, and recommendation.
 
+Notes:
+- `invoice_id` is the external invoice id for MVP (example: `INV-1002`)
+- response includes payment history, amount paid, outstanding amount, risk bucket, and recommended action
+
 ### `GET /api/v1/customers/{customer_id}`
 Returns customer profile, open exposure, payment behavior summary, and open invoices.
+
+Notes:
+- `customer_id` is the external customer id for MVP (example: `CUST-001`)
+- response includes open exposure, overdue counts, late-payment ratio, and open invoices with risk summary
 
 ### `GET /api/v1/forecast/cash`
 Query params:

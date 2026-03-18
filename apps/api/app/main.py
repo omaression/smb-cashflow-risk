@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.config import settings
+from app.routers.customers import router as customers_router
 from app.routers.dashboard import router as dashboard_router
 from app.routers.forecast import router as forecast_router
 from app.routers.health import router as health_router
@@ -11,5 +12,6 @@ app = FastAPI(title=settings.app_name)
 app.include_router(health_router)
 app.include_router(dashboard_router, prefix=settings.api_prefix)
 app.include_router(invoices_router, prefix=settings.api_prefix)
-app.include_router(ingest_router, prefix=settings.api_prefix)
+app.include_router(customers_router, prefix=settings.api_prefix)
 app.include_router(forecast_router, prefix=settings.api_prefix)
+app.include_router(ingest_router, prefix=settings.api_prefix)

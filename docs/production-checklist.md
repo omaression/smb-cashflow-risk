@@ -44,7 +44,7 @@ This checklist is specific to the SMB Cash Flow Risk project.
 - [ ] Define retraining or rescoring cadence
 
 ## Portfolio/demo readiness
-- [ ] Include a realistic walkthrough dataset
-- [ ] Prepare a 2-minute demo script
+- [x] Include a realistic walkthrough dataset
+- [x] Prepare a 2-minute demo script
 - [ ] Write architecture summary and tradeoff notes
-- [ ] Make local startup reproducible with one README flow
+- [x] Make local startup reproducible with one README flow

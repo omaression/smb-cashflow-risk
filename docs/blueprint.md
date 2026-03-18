@@ -44,7 +44,7 @@ An internal finance intelligence tool that predicts short-term cash pressure, fl
 ### Risk scoring (first pass)
 Start simple before fancy:
 - logistic regression or gradient-boosted tree
-- target: paid >X days late
+- target: `is_late_15` (paid or still unpaid 15+ days past due)
 - features:
   - invoice amount
   - terms length

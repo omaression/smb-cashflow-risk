@@ -19,23 +19,28 @@
 - [x] Dashboard summary endpoint
 - [x] Invoice risk list endpoint
 - [x] Cash forecast endpoint
+- [x] Invoice detail endpoint
+- [x] Customer detail endpoint
 
 ## Milestone 3 — frontend baseline
-- [ ] Next.js app setup
-- [ ] Dashboard shell
-- [ ] Summary cards
-- [ ] Invoice risk table
-- [ ] Cash forecast chart
-- [ ] Customer detail page
+- [x] Next.js app setup
+- [x] Dashboard shell
+- [x] Summary cards
+- [x] Invoice risk table
+- [x] Cash forecast chart
+- [x] Customer detail page
+- [x] Invoice detail page
 
 ## Milestone 4 — scoring + explanations
-- [ ] Baseline risk feature engineering
+- [x] Baseline risk feature engineering
+- [x] Label definition script / dataset builder
+- [x] Baseline scoring workflow
 - [ ] Late-payment model
-- [ ] Reason-code generation
-- [ ] Collection priority ranking
+- [x] Reason-code generation
+- [x] Collection priority ranking
 
 ## Milestone 5 — polish
-- [ ] Testing
-- [ ] Seed/demo data
+- [x] Testing
+- [x] Seed/demo data
 - [ ] Deployment notes
-- [ ] Portfolio writeup
+- [x] Portfolio writeup
