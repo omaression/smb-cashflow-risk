@@ -8,8 +8,16 @@ This project can now run as a 3-service Docker stack:
 
 ### Start the stack
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
+
+### Seed the database
+On first run, the schema is auto-applied by Postgres. Seed sample data via:
+```bash
+./scripts/seed-docker.sh
+```
+
+This imports sample CSV files from `data/raw/` through the API import endpoint.
 
 ### Endpoints
 - Web: `http://localhost:3000`
@@ -29,7 +37,8 @@ docker compose up --build
 
 ### Web
 - built from `apps/web/Dockerfile`
-- uses `NEXT_PUBLIC_API_BASE_URL`
+- uses `NEXT_PUBLIC_API_BASE_URL` for browser-visible links
+- uses `INTERNAL_API_BASE_URL` for server-side API calls
 - serves production build on port 3000
 
 ## Requirements
@@ -50,16 +59,6 @@ This stack is good for local demos and portfolio evaluation. Before real deploym
 For a portfolio deploy, the easiest path is:
 1. managed Postgres
 2. backend container on Render/Fly.io/Railway
-3. frontend on Vercel or container host
-
-## Smoke checks
-After startup:
-```bash
-curl http://localhost:8000/healthz
-curl http://localhost:8000/api/v1/dashboard/summary
-open http://localhost:3000
-```
-container on Render/Fly.io/Railway
 3. frontend on Vercel or container host
 
 ## Smoke checks

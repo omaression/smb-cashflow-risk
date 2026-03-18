@@ -31,8 +31,11 @@ services:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/smb_cashflow_risk
     ports:
       - "8000:8000"
-    volumes:
-      - ./data:/data:ro
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   web:
     build:
@@ -42,8 +45,10 @@ services:
     container_name: smb-cashflow-risk-web
     restart: unless-stopped
     depends_on:
-      - api
+      api:
+        condition: service_healthy
     environment:
+      INTERNAL_API_BASE_URL: http://api:8000/api/v1
       NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
     ports:
       - "3000:3000"
