@@ -12,10 +12,6 @@ if ! command -v curl >/dev/null 2>&1; then
   echo "curl is required."
   exit 1
 fi
-if ! command -v python3 >/dev/null 2>&1; then
-  echo "python3 is required."
-  exit 1
-fi
 
 echo "Seeding API at $API ..."
 has_failures=false
@@ -30,23 +26,22 @@ for entity in customers invoices payments cash_snapshots; do
   echo -n "  $entity ... "
   if ! resp=$(curl -sf -X POST "$API/api/v1/import/csv" \
     -F "entity_type=$entity" \
-    -F "file=@$file" 2>&1); then
+    -F "file=@$file"); then
     echo "FAIL"
-    echo "    $resp"
     has_failures=true
     continue
   fi
 
-  parsed=$(echo "$resp" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('imported', 0), d.get('rejected', 0))")
-  imported=$(echo "$parsed" | awk '{print $1}')
-  rejected=$(echo "$parsed" | awk '{print $2}')
+  imported=$(printf '%s' "$resp" | grep -o '"imported":[0-9]*' | head -1 | cut -d: -f2)
+  rejected=$(printf '%s' "$resp" | grep -o '"rejected":[0-9]*' | head -1 | cut -d: -f2)
+  imported=${imported:-unknown}
+  rejected=${rejected:-unknown}
 
   echo "imported=$imported rejected=$rejected"
 
   if [[ "$rejected" != "0" ]]; then
     has_failures=true
   fi
-
 done
 
 echo "Done."

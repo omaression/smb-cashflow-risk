@@ -39,6 +39,7 @@ This imports sample CSV files from `data/raw/` through the API import endpoint.
 - built from `apps/web/Dockerfile`
 - uses `NEXT_PUBLIC_API_BASE_URL` for browser-visible links
 - uses `INTERNAL_API_BASE_URL` for server-side API calls
+- uses Next.js standalone output in the runner image
 - serves production build on port 3000
 
 ## Requirements
@@ -67,4 +68,5 @@ After startup:
 curl http://localhost:8000/healthz
 curl http://localhost:8000/api/v1/dashboard/summary
 open http://localhost:3000
+```ost:3000
 ```

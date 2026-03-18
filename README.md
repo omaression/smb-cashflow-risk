@@ -22,7 +22,7 @@ sleep 10
 ./scripts/seed-docker.sh
 open http://localhost:3000
 ```
-Requires only Docker — no local Python or Node.js installation needed.
+Requires Docker and curl only — no local Python or Node.js installation needed.
 
 ## Local development
 ### API

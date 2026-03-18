@@ -90,6 +90,18 @@ function getBrowserApiBaseUrl(): string | undefined {
   return browserApiBaseUrl;
 }
 
+function getBrowserApiOrigin(): string | undefined {
+  if (!browserApiBaseUrl) {
+    return undefined;
+  }
+
+  try {
+    return new URL(browserApiBaseUrl).origin;
+  } catch {
+    return undefined;
+  }
+}
+
 async function fetchJson<T>(path: string): Promise<T> {
   if (!apiBaseUrl) {
     throw new Error("API base URL is not configured. Set INTERNAL_API_BASE_URL (server) or NEXT_PUBLIC_API_BASE_URL (browser).");
@@ -103,7 +115,7 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 export function getBrowserApiLinks() {
-  const docs = getBrowserApiBaseUrl() ? `${getBrowserApiBaseUrl()}/docs` : undefined;
+  const docs = getBrowserApiOrigin() ? `${getBrowserApiOrigin()}/docs` : undefined;
   const summary = getBrowserApiBaseUrl() ? `${getBrowserApiBaseUrl()}/dashboard/summary` : undefined;
 
   return { docs, summary };
