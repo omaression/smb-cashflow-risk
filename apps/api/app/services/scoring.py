@@ -87,28 +87,20 @@ def score_feature_row(row: InvoiceFeatureRow) -> BaselineScoreRow:
 
 
 def evaluate_baseline(rows: list[InvoiceFeatureRow]) -> tuple[list[BaselineScoreRow], BaselineEvaluation]:
+    from app.services.evaluation import evaluate_model
+
     scored_rows = [score_feature_row(row) for row in rows]
-    true_positive = sum(1 for row in scored_rows if row.predicted_label == 1 and row.actual_label == 1)
-    false_positive = sum(1 for row in scored_rows if row.predicted_label == 1 and row.actual_label == 0)
-    correct = sum(1 for row in scored_rows if row.predicted_label == row.actual_label)
-
-    row_count = len(scored_rows)
-    positive_labels = sum(row.actual_label for row in scored_rows)
-    predicted_positive = sum(row.predicted_label for row in scored_rows)
-    precision = round(true_positive / predicted_positive, 2) if predicted_positive else 0.0
-    recall = round(true_positive / positive_labels, 2) if positive_labels else 0.0
-    accuracy = round(correct / row_count, 2) if row_count else 0.0
-
+    evaluation_result = evaluate_model(scored_rows, "all_rows")
     evaluation = BaselineEvaluation(
-        row_count=row_count,
-        positive_labels=positive_labels,
-        predicted_positive=predicted_positive,
-        accuracy=accuracy,
-        precision=precision,
-        recall=recall,
+        row_count=evaluation_result.row_count,
+        positive_labels=evaluation_result.positive_labels,
+        predicted_positive=evaluation_result.predicted_positive,
+        accuracy=evaluation_result.accuracy,
+        precision=evaluation_result.precision,
+        recall=evaluation_result.recall,
         top_features_used=CURRENT_MODEL_VERSION.features_used,
-        metrics_status="legacy_baseline",
-        warning=None,
+        metrics_status=evaluation_result.metrics_status,
+        warning=evaluation_result.warning,
     )
     return scored_rows, evaluation
 

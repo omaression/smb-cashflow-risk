@@ -153,6 +153,10 @@ def _artifact_timestamp() -> str:
     return datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
 
 
+def _artifact_suffix(model_version: ModelVersion) -> str:
+    return model_version.evaluation_status
+
+
 def save_evaluation_artifact(
     output_dir: str | Path,
     model_version: ModelVersion,
@@ -195,7 +199,7 @@ def generate_evaluation_report(
     target_dir = Path(output_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
     timestamp = _artifact_timestamp()
-    target_path = target_dir / f"{model_version.version}_{timestamp}_WORKFLOW_DEMO_report.md"
+    target_path = target_dir / f"{model_version.version}_{timestamp}_{_artifact_suffix(model_version)}_report.md"
 
     metrics_lines = []
     for name, result in split_results.items():
