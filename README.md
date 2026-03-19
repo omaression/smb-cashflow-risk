@@ -58,9 +58,18 @@ NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 cd apps/api
 . .venv/bin/activate
 cd ../..
-python3 scripts/evaluate-baseline.py
+python scripts/evaluate-baseline.py
 ```
 Creates workflow-demo evaluation artifacts under `artifacts/evaluations/`.
+
+### Run external learned baselines (Phase A)
+```bash
+cd apps/api
+. .venv/bin/activate
+cd ../..
+python scripts/run-external-ml-baselines.py
+```
+Runs separate IBM + Skywalker logistic baselines and writes comparison outputs under `artifacts/ml/`.
 
 ## Portfolio docs
 - architecture tradeoffs: `docs/architecture-tradeoffs.md`

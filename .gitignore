@@ -9,3 +9,8 @@ dist/
 build/
 artifacts/evaluations/
 !artifacts/evaluations/.gitkeep
+artifacts/ml/external/*
+!artifacts/ml/external/ibm/.gitkeep
+!artifacts/ml/external/skywalker/.gitkeep
+artifacts/ml/comparisons/*
+!artifacts/ml/comparisons/.gitkeep
