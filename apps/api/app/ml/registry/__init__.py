@@ -38,7 +38,7 @@ _DATASETS: Dict[DatasetKey, DatasetSpec] = {
         description="External invoice/payment dataset for a second independent baseline.",
         adapter_cls=SkywalkerInvoiceAdapter,
         source_hint="raw_data/external/skywalker",
-        labels=["is_delinquent", "days_late", "overdue_ratio"],
+        labels=["is_late_1", "is_late_5", "is_late_15", "days_late"],
     ),
 }
 
@@ -51,3 +51,4 @@ def list_dataset_keys() -> list[DatasetKey]:
 def get_dataset_spec(dataset_key: DatasetKey) -> DatasetSpec:
     """Fetch the registry entry for a dataset key."""
     return _DATASETS[dataset_key]
+
