@@ -13,6 +13,10 @@ A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next
 - **Frontend:** Next.js / React / TypeScript
 - **Infra:** Docker, docker-compose
 
+## License
+Code in this repository is licensed under **Apache-2.0**.
+External datasets, benchmarks, and third-party sources may have separate licenses and usage constraints.
+
 ## Quick start (Docker — recommended)
 ```bash
 git clone https://github.com/omaression/smb-cashflow-risk.git
@@ -76,6 +80,7 @@ Runs separate IBM + Skywalker logistic baselines and writes comparison outputs u
 - portfolio writeup: `docs/portfolio-writeup.md`
 - deployment notes: `docs/deployment-notes.md`
 - baseline model: `docs/baseline-model.md`
+- ML transfer recommendation: `docs/ml-transfer-recommendation.md`
 
 ## Reference docs
 - [Execution pipeline](docs/execution-pipeline.md)
