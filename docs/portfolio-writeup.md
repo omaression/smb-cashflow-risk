@@ -43,6 +43,7 @@ SMBs often do not fail because revenue is zero. They fail because cash arrives t
 - invoice-level feature builder
 - `is_late_15` label definition
 - rule-based baseline scoring workflow
+- versioned baseline metadata + evaluation artifacts for workflow credibility
 - exportable feature CSV for future model training/evaluation
 
 ## Why it is portfolio-worthy

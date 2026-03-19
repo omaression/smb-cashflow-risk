@@ -53,10 +53,20 @@ NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 # writes data/processed/invoice_features.csv by default
 ```
 
+### Generate baseline evaluation artifacts
+```bash
+cd apps/api
+. .venv/bin/activate
+cd ../..
+python3 scripts/evaluate-baseline.py
+```
+Creates workflow-demo evaluation artifacts under `artifacts/evaluations/`.
+
 ## Portfolio docs
 - architecture tradeoffs: `docs/architecture-tradeoffs.md`
 - portfolio writeup: `docs/portfolio-writeup.md`
 - deployment notes: `docs/deployment-notes.md`
+- baseline model: `docs/baseline-model.md`
 
 ## Reference docs
 - [Execution pipeline](docs/execution-pipeline.md)

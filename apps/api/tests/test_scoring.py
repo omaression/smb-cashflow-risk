@@ -15,7 +15,9 @@ def test_evaluate_baseline_scores_expected_invoice_order(seed_data) -> None:
     assert evaluation.row_count == 3
     assert evaluation.positive_labels == 1
     assert evaluation.predicted_positive == 2
-    assert evaluation.recall == 1.0
+    assert evaluation.metrics_status == "demonstration_only"
+    assert evaluation.warning is not None
+    assert evaluation.recall is None
 
 
 def test_export_feature_rows_to_csv_writes_header_for_empty_input(tmp_path) -> None:

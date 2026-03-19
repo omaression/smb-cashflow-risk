@@ -1,6 +1,6 @@
 # SMB Cash Flow Risk — Execution Pipeline
 
-This project should run through a repeatable **buildx / buildx-lite pipeline** so planning, implementation, testing, and review stay tight and portfolio-grade.
+This project should run through a repeatable **build / buildx pipeline** under `advanced-dispatcher` so planning, implementation, testing, and review stay tight and portfolio-grade.
 
 ## 1. Outcome definition
 Before writing code, confirm the slice answers all of these:
@@ -13,7 +13,7 @@ Before writing code, confirm the slice answers all of these:
 ## 2. Routing rule
 Use one of these two tracks only:
 
-### buildx-lite — scoped slices
+### build — scoped slices
 Use for:
 - endpoint additions
 - test fixes
@@ -23,13 +23,16 @@ Use for:
 - feature engineering increments
 
 Steps:
-1. plan
-2. implement
-3. test
-4. simplify
-5. retest
-6. review
-7. final-test
+1. parallel-plan-a
+2. parallel-plan-b
+3. judge-plan
+4. boilerplate
+5. implement
+6. test
+7. simplify
+8. retest
+9. review-resolve
+10. final-test
 
 ### buildx — major milestones
 Use for:
@@ -38,6 +41,7 @@ Use for:
 - scoring pipeline + explanations system
 - deployment + CI hardening
 - major architecture changes
+- ML credibility/evaluation phases with artifacts and review
 
 Steps:
 1. parallel-plan-a
@@ -201,5 +205,8 @@ Checklist:
 - [x] fix test import path issues
 - [x] add forecast tests
 - [x] run backend pytest cleanly
+
+**Next recommended slice:** Invoice detail + customer detail endpoints
+] run backend pytest cleanly
 
 **Next recommended slice:** Invoice detail + customer detail endpoints
