@@ -120,7 +120,7 @@ On current native sample data, this produces a workflow-demo artifact rather tha
 - done: baseline evaluation credibility layer, external benchmark pipelines, and project-native ML readiness path are in place
 
 ### Phase 4 — release
-- in progress: release notes, changelog, demo polish, deployment prep, and final release checklist for `v0.3.0`
+- in progress: release notes, changelog, deployment prep, final release checklist, and last-mile UI/demo polish for `v0.3.0`
 
 ## Development note
 This public repo documents outcomes, usage, architecture, decisions, and limitations.
