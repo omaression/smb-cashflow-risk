@@ -14,3 +14,5 @@ artifacts/ml/external/*
 !artifacts/ml/external/skywalker/.gitkeep
 artifacts/ml/comparisons/*
 !artifacts/ml/comparisons/.gitkeep
+artifacts/ml/project_native/*
+!artifacts/ml/project_native/.gitkeep

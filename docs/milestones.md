@@ -35,12 +35,14 @@
 - [x] Baseline risk feature engineering
 - [x] Label definition script / dataset builder
 - [x] Baseline scoring workflow
-- [ ] Late-payment model
 - [x] Reason-code generation
 - [x] Collection priority ranking
 
-## Milestone 5 — polish
+## Milestone 5 — delivery + credibility
 - [x] Testing
 - [x] Seed/demo data
 - [x] Deployment notes
 - [x] Portfolio writeup
+- [x] Baseline evaluation credibility layer
+- [x] External benchmark pipelines
+- [ ] Project-native ML readiness pipeline

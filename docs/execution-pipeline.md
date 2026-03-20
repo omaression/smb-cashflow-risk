@@ -1,8 +1,23 @@
 # SMB Cash Flow Risk — Execution Pipeline
 
-This project should run through a repeatable **build / buildx pipeline** under `advanced-dispatcher` so planning, implementation, testing, and review stay tight and portfolio-grade.
+This project should run through `advanced-dispatcher` workflows so planning, implementation, testing, and review stay tight and portfolio-grade.
 
-## 1. Outcome definition
+## How the workflow works
+All dispatcher workflows (`buildq`, `build`, `buildx`) should follow the same overall pattern:
+- parallel planning from at least two perspectives
+- judge-plan synthesis
+- a mandatory **blueprint** before any boilerplate or implementation work
+- implementation + testing
+- simplification + retesting
+- review-driven fixes
+- final validation before merge
+
+### Blueprint rule
+- `build` and `buildx` should generate the blueprint with **`gpt-5.4`**
+- `buildq` should generate the blueprint with **`gpt-5.3-codex`**
+- the blueprint should be explicit enough that implementation is executing a concrete plan, not improvising
+
+## Outcome definition
 Before writing code, confirm the slice answers all of these:
 - What user/business question does this slice solve?
 - What endpoint, UI element, or artifact proves it works?
@@ -10,11 +25,9 @@ Before writing code, confirm the slice answers all of these:
 - What is explicitly out of scope?
 - What test will fail before the work and pass after it?
 
-## 2. Routing rule
-Use one of these two tracks only:
-
-### build — scoped slices
-Use for:
+## Routing rule
+### `build`
+Use for scoped slices such as:
 - endpoint additions
 - test fixes
 - refactors
@@ -22,40 +35,15 @@ Use for:
 - small frontend slices
 - feature engineering increments
 
-Steps:
-1. parallel-plan-a
-2. parallel-plan-b
-3. judge-plan
-4. boilerplate
-5. implement
-6. test
-7. simplify
-8. retest
-9. review-resolve
-10. final-test
+### `buildx`
+Use for major milestones such as:
+- end-to-end product phases
+- deployment / CI hardening
+- architecture changes
+- ML credibility or evaluation phases with artifacts and review
 
-### buildx — major milestones
-Use for:
-- full frontend setup
-- end-to-end dashboard build
-- scoring pipeline + explanations system
-- deployment + CI hardening
-- major architecture changes
-- ML credibility/evaluation phases with artifacts and review
-
-Steps:
-1. parallel-plan-a
-2. parallel-plan-b
-3. judge-plan
-4. boilerplate
-5. implement
-6. test
-7. simplify
-8. retest
-9. review-resolve-a
-10. test-a
-11. review-resolve-b
-12. final-test
+## Current expectation
+The workflow is only considered complete when implementation, tests, review fixes, and final validation have all been executed — not just the planning and review lanes.
 
 ## 3. Master delivery checklist
 
