@@ -16,14 +16,16 @@ for entity in customers invoices payments cash_snapshots; do
     continue
   fi
   echo "  Loading ${entity}..."
-  status=$(curl -s -o /dev/null -w "%{http_code}" \
-    -X POST "${API}/ingest/${entity}" \
-    -H "Content-Type: text/csv" \
-    --data-binary "@${file}")
+  response=$(curl -s -w "\n%{http_code}" \
+    -X POST "${API}/import/csv" \
+    -F "entity_type=${entity}" \
+    -F "file=@${file}")
+  status=$(echo "$response" | tail -1)
+  body=$(echo "$response" | sed '$d')
   if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
-    echo "    OK (${status})"
+    echo "    OK (${status}) ${body}"
   else
-    echo "    FAILED (${status})"
+    echo "    FAILED (${status}) ${body}"
   fi
 done
 
