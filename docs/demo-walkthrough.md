@@ -47,6 +47,7 @@ Open an invoice page and explain:
 - status
 - risk bucket
 - recommended action
+- the new human-readable explanation of *why this invoice is risky*
 
 ### Step 5 — Honest ML framing
 Explain briefly:

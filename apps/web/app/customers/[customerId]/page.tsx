@@ -22,13 +22,15 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
           <div>
             <h1>{customer.customer_name}</h1>
             <p>
-              {customer.industry ?? "Unknown industry"} · {customer.segment ?? "Unknown segment"} · Terms{" "}
-              {customer.payment_terms_days ?? "n/a"} days
+              {customer.industry ?? "Unknown industry"} · {customer.segment ?? "Unknown segment"} · Terms {customer.payment_terms_days ?? "n/a"} days
             </p>
           </div>
-          <div className="panel" style={{ minWidth: 260 }}>
+          <div className="panel callout-panel" style={{ minWidth: 260 }}>
             <div className="muted">Top recommendation</div>
-            <div style={{ marginTop: 10, fontWeight: 600 }}>{customer.top_recommendation}</div>
+            <div style={{ marginTop: 10, fontWeight: 700 }}>{customer.top_recommendation}</div>
+            <p className="muted" style={{ marginTop: 10 }}>
+              This gives reviewers a quick operational read on where collections attention should go next.
+            </p>
           </div>
         </section>
 
@@ -54,8 +56,8 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
         <section style={{ marginTop: 16 }}>
           {customer.open_invoices.length > 0 ? (
             <div className="panel">
-              <h2>Open invoices</h2>
-              <table className="table">
+              <div className="section-kicker">Open invoices</div>
+              <table className="table responsive-table" style={{ marginTop: 10 }}>
                 <thead>
                   <tr>
                     <th>Invoice</th>
@@ -69,12 +71,14 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                 <tbody>
                   {customer.open_invoices.map((invoice) => (
                     <tr key={invoice.invoice_id}>
-                      <td>{invoice.invoice_id}</td>
-                      <td>${invoice.total_amount.toLocaleString()}</td>
-                      <td>${invoice.outstanding_amount.toLocaleString()}</td>
-                      <td>{invoice.due_date}</td>
-                      <td>{invoice.status}</td>
-                      <td>
+                      <td data-label="Invoice">
+                        <Link href={`/invoices/${invoice.invoice_id}`}>{invoice.invoice_id}</Link>
+                      </td>
+                      <td data-label="Total">${invoice.total_amount.toLocaleString()}</td>
+                      <td data-label="Outstanding">${invoice.outstanding_amount.toLocaleString()}</td>
+                      <td data-label="Due">{invoice.due_date}</td>
+                      <td data-label="Status">{invoice.status}</td>
+                      <td data-label="Risk">
                         <span className={`badge ${invoice.risk_bucket}`}>{invoice.risk_bucket}</span>
                         <div className="muted">{Math.round(invoice.late_payment_probability * 100)}%</div>
                       </td>
@@ -86,7 +90,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
           ) : (
             <EmptyState
               title="No open invoices"
-              body="This customer currently has no receivables exposure in the loaded portfolio."
+              body="This customer currently has no receivables exposure in the loaded portfolio, so there is no collections action required right now."
             />
           )}
         </section>
