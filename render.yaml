@@ -3,8 +3,8 @@ services:
     name: smb-cashflow-risk-api
     runtime: docker
     repo: https://github.com/omaression/smb-cashflow-risk
-    rootDir: .
-    dockerfilePath: ./apps/api/Dockerfile
+    rootDir: apps/api
+    dockerfilePath: ./Dockerfile
     plan: free
     autoDeploy: true
     envVars:
@@ -22,8 +22,8 @@ services:
     name: smb-cashflow-risk-web
     runtime: docker
     repo: https://github.com/omaression/smb-cashflow-risk
-    rootDir: .
-    dockerfilePath: ./apps/web/Dockerfile
+    rootDir: apps/web
+    dockerfilePath: ./Dockerfile
     plan: free
     autoDeploy: true
     envVars:
