@@ -97,21 +97,24 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - [Execution pipeline](docs/execution-pipeline.md)
 - [Milestones](docs/milestones.md)
 - [Deployment notes](docs/deployment-notes.md)
+- [Demo walkthrough](docs/demo-walkthrough.md)
+- [Release checklist](docs/release-checklist-v0.3.0.md)
 
 ## Phase status
 ### Phase 0 — foundation
-- domain model, API contract, sample data, and repo structure established
+- done: domain model, API contract, sample data, and repo structure established
 
 ### Phase 1 — product baseline
-- backend API, frontend dashboard, forecasting, detail views, and rule-based scoring are in place
+- done: backend API, frontend dashboard, forecasting, detail views, and rule-based scoring are in place
 
 ### Phase 2 — reliability and delivery
-- Docker stack, deployment notes, CI, and review workflows are in place
+- done: Docker stack, deployment notes, CI, and review workflows are in place
 
 ### Phase 3 — ML credibility
-- baseline evaluation credibility layer merged
-- external benchmark pipelines merged
-- project-native ML readiness pipeline in progress
+- done: baseline evaluation credibility layer, external benchmark pipelines, and project-native ML readiness path are in place
+
+### Phase 4 — release
+- in progress: release notes, changelog, demo polish, and deployment/release checklist for `v0.3.0`
 
 ## Workflow note
 This project uses `advanced-dispatcher` workflows. In practice that means:
