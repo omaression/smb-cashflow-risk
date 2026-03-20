@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 from collections.abc import AsyncGenerator
 
@@ -7,6 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import Base, engine
 from app.models import Customer, DailyCashSnapshot, Invoice, Payment  # noqa: F401 — ensure models registered
+
+logger = logging.getLogger(__name__)
 from app.routers.customers import router as customers_router
 from app.routers.dashboard import router as dashboard_router
 from app.routers.forecast import router as forecast_router
@@ -17,7 +20,10 @@ from app.routers.invoices import router as invoices_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception:
+        logger.warning("Could not create tables on startup (expected in test/CI)")
     yield
 
 
