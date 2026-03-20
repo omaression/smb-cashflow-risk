@@ -5,7 +5,7 @@ services:
     repo: https://github.com/omaression/smb-cashflow-risk
     rootDir: .
     dockerfilePath: ./apps/api/Dockerfile
-    plan: starter
+    plan: free
     autoDeploy: true
     envVars:
       - key: APP_ENV
@@ -24,7 +24,7 @@ services:
     repo: https://github.com/omaression/smb-cashflow-risk
     rootDir: .
     dockerfilePath: ./apps/web/Dockerfile
-    plan: starter
+    plan: free
     autoDeploy: true
     envVars:
       - key: INTERNAL_API_BASE_URL
@@ -36,4 +36,4 @@ databases:
   - name: smb-cashflow-risk-db
     databaseName: smb_cashflow_risk
     user: smb_cashflow_risk
-    plan: starter
+    plan: free
