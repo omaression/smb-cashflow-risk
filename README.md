@@ -71,6 +71,15 @@ python scripts/run-external-ml-baselines.py
 ```
 Runs separate IBM + Skywalker logistic baselines and writes comparison outputs under `artifacts/ml/`.
 
+### Run project-native ML readiness pipeline
+```bash
+cd apps/api
+. .venv/bin/activate
+cd ../..
+python scripts/run-project-native-ml-baseline.py
+```
+On current native sample data, this should produce a workflow-demo artifact rather than claim meaningful model training.
+
 ## Portfolio docs
 - architecture tradeoffs: `docs/architecture-tradeoffs.md`
 - portfolio writeup: `docs/portfolio-writeup.md`
