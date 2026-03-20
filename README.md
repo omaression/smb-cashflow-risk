@@ -21,10 +21,7 @@ External datasets, benchmarks, and third-party sources may have separate license
 ```bash
 git clone https://github.com/omaression/smb-cashflow-risk.git
 cd smb-cashflow-risk
-docker compose up --build -d
-sleep 10
-./scripts/seed-docker.sh
-open http://localhost:3000
+./scripts/release-demo.sh
 ```
 Requires Docker and curl only — no local Python or Node.js installation needed.
 
@@ -45,24 +42,21 @@ npm install
 NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 ```
 
-### Demo helper
-```bash
-./scripts/demo.sh
-```
-
+## Demo commands
 ### One-command release demo bootstrap
 ```bash
 ./scripts/release-demo.sh
 ```
 Builds the stack, waits for health, seeds demo data, and prints the main URLs.
 
-### Export invoice features for baseline modeling
+### Manual demo path
 ```bash
-./scripts/export-invoice-features.py
-# bootstraps a temporary SQLite demo DB from sample CSVs
-# writes data/processed/invoice_features.csv by default
+docker compose up --build -d
+sleep 10
+./scripts/seed-docker.sh
 ```
 
+## ML utility scripts
 ### Generate baseline evaluation artifacts
 ```bash
 cd apps/api
@@ -70,16 +64,14 @@ cd apps/api
 cd ../..
 python scripts/evaluate-baseline.py
 ```
-Creates workflow-demo evaluation artifacts under `artifacts/evaluations/`.
 
-### Run external learned baselines (Phase A)
+### Run external benchmark baselines
 ```bash
 cd apps/api
 . .venv/bin/activate
 cd ../..
 python scripts/run-external-ml-baselines.py
 ```
-Runs separate IBM + Skywalker logistic baselines and writes comparison outputs under `artifacts/ml/`.
 
 ### Run project-native ML readiness pipeline
 ```bash
@@ -88,7 +80,7 @@ cd apps/api
 cd ../..
 python scripts/run-project-native-ml-baseline.py
 ```
-On current native sample data, this should produce a workflow-demo artifact rather than claim meaningful model training.
+On current native sample data, this produces a workflow-demo artifact rather than claiming meaningful model training.
 
 ## Portfolio docs
 - architecture tradeoffs: `docs/architecture-tradeoffs.md`
@@ -105,7 +97,7 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - [Deployment notes](docs/deployment-notes.md)
 - [Render deploy guide](docs/deploy-render.md)
 - [Demo walkthrough](docs/demo-walkthrough.md)
-- [Release guide](docs/buildx-release-runbook-v0.3.0.md)
+- [Release notes draft](docs/release-notes-v0.3.0.md)
 - [Release checklist](docs/release-checklist-v0.3.0.md)
 
 ## Phase status
@@ -122,13 +114,8 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - done: baseline evaluation credibility layer, external benchmark pipelines, and project-native ML readiness path are in place
 
 ### Phase 4 — release
-- in progress: release notes, changelog, demo polish, and deployment/release checklist for `v0.3.0`
+- in progress: release notes, changelog, demo polish, deployment prep, and final release checklist for `v0.3.0`
 
 ## Development note
-Changes to this project should follow a disciplined path:
-- clarify the outcome
-- create a concrete implementation blueprint
-- implement and test
-- review and validate before merge
-
-The public repo documents the outcomes and standards, not the internal orchestration details used to execute them.
+This public repo documents outcomes, usage, architecture, decisions, and limitations.
+Detailed internal orchestration notes stay local and git-ignored.
