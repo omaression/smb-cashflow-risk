@@ -87,31 +87,35 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - baseline model: `docs/baseline-model.md`
 - ML project-native readiness: `docs/ml-project-native-readiness.md`
 - ML transfer recommendation: `docs/ml-transfer-recommendation.md`
+- buildx native runbook: `docs/buildx-ml-project-native-runbook.md`
 
 ## Reference docs
 - [Execution pipeline](docs/execution-pipeline.md)
 - [Milestones](docs/milestones.md)
 - [Deployment notes](docs/deployment-notes.md)
 
-## Phase plan
+## Phase status
 ### Phase 0 — foundation
-- define domain model
-- define success metrics
-- decide MVP screens
-- create repo structure
+- domain model, API contract, sample data, and repo structure established
 
-### Phase 1 — data + backend baseline
-- schema for customers, invoices, payments, snapshots
-- CSV ingestion pipeline
-- baseline risk features
-- baseline cash flow forecast endpoint
+### Phase 1 — product baseline
+- backend API, frontend dashboard, forecasting, detail views, and rule-based scoring are in place
 
-### Phase 2 — scoring + explanations
-- late-payment risk model
-- reason codes / feature contributions
-- collections priority ranking
+### Phase 2 — reliability and delivery
+- Docker stack, deployment notes, CI, and review workflows are in place
 
-### Phase 3 — containerization + delivery
-- Dockerfile stack for reproducible deployment
-- seedable demo data flow
-- portfolio-ready documentation
+### Phase 3 — ML credibility
+- baseline evaluation credibility layer merged
+- external benchmark pipelines merged
+- project-native ML readiness pipeline in progress
+
+## Workflow note
+This project uses `advanced-dispatcher` workflows. In practice that means:
+- parallel planning
+- judge-plan synthesis
+- a mandatory blueprint before implementation
+- implementation + tests
+- review-driven fixes
+- final validation before merge
+
+For major phases, the blueprint should be detailed enough that execution follows a concrete plan instead of improvising.

@@ -26,6 +26,16 @@ Build a project-native ML pipeline path that can honestly defer learned-model cl
 - workflow-demo reporting for too-small native data
 - CI hook to run native readiness script
 
+## Blueprint
+### Concrete execution blueprint
+- add a dedicated project-native adapter that wraps the repo's own `build_invoice_feature_rows()` output
+- register the native dataset in `app.ml.registry` with explicit `is_late_15` target metadata
+- create a native pipeline entrypoint that always emits workflow-demo artifacts in this phase instead of training a model
+- add native reporting helpers that explain why training is deferred
+- wire a script + CI step so the native path runs automatically and proves readiness
+- add tests that verify both: demo artifacts are created and trained-model artifacts are not
+- keep runtime scoring rule-based and avoid any wording that implies learned native performance exists
+
 ### Why it won
 - keeps runtime scorer unchanged
 - proves the native ML path exists
