@@ -29,7 +29,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
             <div className="muted">Top recommendation</div>
             <div style={{ marginTop: 10, fontWeight: 700 }}>{customer.top_recommendation}</div>
             <p className="muted" style={{ marginTop: 10 }}>
-              This gives the recruiter a quick operational read on where collections attention should go next.
+              This gives reviewers a quick operational read on where collections attention should go next.
             </p>
           </div>
         </section>
