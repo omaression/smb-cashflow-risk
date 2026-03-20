@@ -69,6 +69,7 @@ main {
 .badge.high { background: rgba(252, 165, 165, 0.16); color: var(--danger); }
 .badge.medium { background: rgba(253, 230, 138, 0.16); color: var(--warning); }
 .badge.low { background: rgba(134, 239, 172, 0.16); color: var(--success); }
+.badge.critical { background: rgba(248, 113, 113, 0.22); color: #f87171; }
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -92,7 +93,8 @@ main {
   border-radius: 14px 14px 6px 6px;
   background: linear-gradient(180deg, #7dd3fc 0%, #2563eb 100%);
 }
-.bar-label { margin-top: 8px; color: var(--muted); font-size: 0.85rem; }
+.bar-value { text-align: center; font-size: 0.78rem; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+.bar-label { margin-top: 8px; color: var(--muted); font-size: 0.85rem; text-align: center; }
 .hero {
   display: flex;
   justify-content: space-between;
@@ -167,6 +169,16 @@ code {
   padding: 2px 6px;
   border-radius: 6px;
 }
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px 24px;
+  border-top: 1px solid rgba(159, 176, 209, 0.1);
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.site-footer a { color: var(--accent); }
 @keyframes shimmer {
   100% { transform: translateX(100%); }
 }

@@ -6,7 +6,7 @@ export default function NotFound() {
       <div className="panel" style={{ marginTop: 40 }}>
         <h1>Record not found</h1>
         <p className="muted">
-          The requested customer or invoice does not exist in the currently loaded demo portfolio.
+          The requested customer or invoice does not exist in the current dataset.
         </p>
         <Link className="link-chip" href="/">
           Back to dashboard

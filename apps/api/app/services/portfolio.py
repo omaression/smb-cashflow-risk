@@ -17,6 +17,7 @@ OPEN_INVOICE_STATUSES = {"sent", "partially_paid"}
 @dataclass(frozen=True)
 class RankedInvoice:
     invoice_id: str
+    customer_id: str
     customer_name: str
     amount: Decimal
     due_date: date
@@ -34,7 +35,7 @@ class DashboardSummary:
     overdue_ar: Decimal
     open_invoice_count: int
     risky_invoice_count: int
-    top_risky_customers: list[str]
+    top_risky_customers: list[dict[str, str]]
     projected_cash_balances: dict[str, float]
 
 
@@ -76,6 +77,7 @@ def rank_open_invoices(session: Session) -> list[RankedInvoice]:
         ranked.append(
             RankedInvoice(
                 invoice_id=invoice.external_invoice_id or str(invoice.id),
+                customer_id=customer.external_customer_id or str(customer.id),
                 customer_name=customer.name,
                 amount=invoice.outstanding_amount,
                 due_date=invoice.due_date,
@@ -98,11 +100,11 @@ def build_dashboard_summary(session: Session) -> DashboardSummary:
     risky_invoice_count = sum(1 for item in ranked if item.risk_bucket in {"medium", "high"})
 
     seen_customers: set[str] = set()
-    top_risky_customers: list[str] = []
+    top_risky_customers: list[dict[str, str]] = []
     for item in ranked:
-        if item.risk_bucket in {"medium", "high"} and item.customer_name not in seen_customers:
-            seen_customers.add(item.customer_name)
-            top_risky_customers.append(item.customer_name)
+        if item.risk_bucket in {"medium", "high"} and item.customer_id not in seen_customers:
+            seen_customers.add(item.customer_id)
+            top_risky_customers.append({"id": item.customer_id, "name": item.customer_name})
         if len(top_risky_customers) == 3:
             break
 

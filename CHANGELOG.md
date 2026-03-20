@@ -4,10 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is loosely based on Keep a Changelog and uses Semantic Versioning.
 
-## [Unreleased]
-### Changed
-- final release polish and release execution work in progress
-
 ## [0.3.0] - 2026-03-20
 ### Added
 - end-to-end dashboard MVP with invoice/customer detail views
@@ -21,10 +17,22 @@ The format is loosely based on Keep a Changelog and uses Semantic Versioning.
 - deployment prep via `render.yaml` and `docs/deploy-render.md`
 - Apache-2.0 code license
 - release notes, demo walkthrough, and release checklist docs
+- CORS middleware with configurable `ALLOWED_ORIGINS`
+- Vercel deployment config for Next.js frontend
+- remote seeding script (`scripts/seed-remote.sh`) for hosted deploys
+- SVG favicon and Open Graph metadata for portfolio sharing
+- footer branding with link to omaression.com
 
 ### Changed
 - README and docs expanded to explain ML scope, transfer decisions, deployment, and release/demo guidance
 - runtime scoring remains rule-based for release stability and honest positioning
+- top risky customers API now returns `{id, name}` objects for proper frontend linking
+- removed hardcoded sample customer lookup in frontend
+- cleaned demo-specific language from UI copy
+- empty-state component accepts contextual kicker text
+- cash forecast chart shows value labels on bars with aria attributes
+- render.yaml updated for Vercel + Render split deployment (Render web kept as backup)
+- deployment architecture: Vercel (frontend) + Render (API + Postgres) + Cloudflare DNS
 
 ### Notes
 - `v0.3.0` is the first portfolio-grade MVP release.

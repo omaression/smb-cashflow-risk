@@ -2,6 +2,8 @@
 
 A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next.js.
 
+**Live:** [cashflow.omaression.com](https://cashflow.omaression.com) &middot; **API:** [api.cashflow.omaression.com/docs](https://api.cashflow.omaression.com/docs)
+
 ## What this project does
 - score unpaid invoices for late-payment risk
 - explain risk signals and recommend collections actions
@@ -11,7 +13,21 @@ A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next
 ## Stack
 - **Backend:** FastAPI, SQLAlchemy, PostgreSQL, Pydantic, pytest
 - **Frontend:** Next.js / React / TypeScript
-- **Infra:** Docker, docker-compose
+- **Infra:** Docker, docker-compose, Vercel (frontend), Render (API + Postgres), Cloudflare DNS
+
+## Deployment architecture
+
+```
+cashflow.omaression.com       → Vercel (Next.js)
+api.cashflow.omaression.com   → Render (FastAPI)
+Render managed PostgreSQL      → internal connection
+Cloudflare                     → DNS + proxy
+```
+
+- **Frontend** on Vercel — automatic deploys from `main`
+- **API** on Render — Docker-based, auto-deploy from `main`
+- **Database** on Render managed PostgreSQL (starter plan)
+- **Render web service** also available as a backup frontend deployment
 
 ## License
 Code in this repository is licensed under **Apache-2.0**.
@@ -48,6 +64,11 @@ NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 ./scripts/release-demo.sh
 ```
 Builds the stack, waits for health, seeds demo data, and prints the main URLs.
+
+### Seed a hosted deployment
+```bash
+./scripts/seed-remote.sh https://api.cashflow.omaression.com
+```
 
 ### Release prep checks
 ```bash
@@ -103,7 +124,7 @@ On current native sample data, this produces a workflow-demo artifact rather tha
 - [Deployment notes](docs/deployment-notes.md)
 - [Render deploy guide](docs/deploy-render.md)
 - [Demo walkthrough](docs/demo-walkthrough.md)
-- [Release notes draft](docs/release-notes-v0.3.0.md)
+- [Release notes](docs/release-notes-v0.3.0.md)
 - [Release checklist](docs/release-checklist-v0.3.0.md)
 
 ## Phase status
@@ -120,7 +141,7 @@ On current native sample data, this produces a workflow-demo artifact rather tha
 - done: baseline evaluation credibility layer, external benchmark pipelines, and project-native ML readiness path are in place
 
 ### Phase 4 — release
-- in progress: release notes, changelog, deployment prep, final release checklist, and last-mile UI/demo polish for `v0.3.0`
+- done: UI polish, CORS, deployment config (Vercel + Render + Cloudflare), release notes, and final demo readiness for `v0.3.0`
 
 ## Development note
 This public repo documents outcomes, usage, architecture, decisions, and limitations.

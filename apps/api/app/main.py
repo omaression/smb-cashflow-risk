@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.routers.customers import router as customers_router
@@ -9,6 +10,15 @@ from app.routers.ingest import router as ingest_router
 from app.routers.invoices import router as invoices_router
 
 app = FastAPI(title=settings.app_name)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[origin.strip() for origin in settings.allowed_origins.split(",")],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(health_router)
 app.include_router(dashboard_router, prefix=settings.api_prefix)
 app.include_router(invoices_router, prefix=settings.api_prefix)

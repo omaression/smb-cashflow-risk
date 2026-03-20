@@ -14,7 +14,10 @@ services:
         fromDatabase:
           name: smb-cashflow-risk-db
           property: connectionString
+      - key: ALLOWED_ORIGINS
+        value: https://cashflow.omaression.com
 
+  # Backup frontend deployment — primary frontend is on Vercel
   - type: web
     name: smb-cashflow-risk-web
     runtime: docker
@@ -25,9 +28,9 @@ services:
     autoDeploy: true
     envVars:
       - key: INTERNAL_API_BASE_URL
-        value: https://smb-cashflow-risk-api.onrender.com/api/v1
+        value: https://api.cashflow.omaression.com/api/v1
       - key: NEXT_PUBLIC_API_BASE_URL
-        value: https://smb-cashflow-risk-api.onrender.com/api/v1
+        value: https://api.cashflow.omaression.com/api/v1
 
 databases:
   - name: smb-cashflow-risk-db

@@ -95,7 +95,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           ) : (
             <EmptyState
               title="No payments recorded yet"
-              body="This invoice has not received any payments so far, which makes collections timing especially important for the demo portfolio view."
+              body="This invoice has not received any payments so far, which makes collections timing especially important."
             />
           )}
         </section>

@@ -1,7 +1,24 @@
 # Deployment Notes
 
+## Production deployment architecture
+
+```
+cashflow.omaression.com       → Vercel (Next.js frontend)
+api.cashflow.omaression.com   → Render (FastAPI API)
+Render managed PostgreSQL      → internal connection
+Cloudflare                     → DNS + proxy
+```
+
+- **Frontend** deployed to Vercel from `apps/web/`
+- **API** deployed to Render via Docker from `apps/api/Dockerfile`
+- **Database** provisioned as Render managed PostgreSQL (starter plan)
+- **Render web service** kept as a backup frontend deployment option
+- **CORS** configured via `ALLOWED_ORIGINS` environment variable on the API
+
+See `docs/deploy-render.md` for step-by-step deployment instructions.
+
 ## Local containerized stack
-This project can now run as a 3-service Docker stack:
+This project can also run as a 3-service Docker stack:
 - PostgreSQL
 - FastAPI backend
 - Next.js frontend
@@ -19,6 +36,11 @@ On first run, the schema is auto-applied by Postgres. Seed sample data via:
 
 This imports sample CSV files from `data/raw/` through the API import endpoint.
 
+### Seed a hosted deployment
+```bash
+./scripts/seed-remote.sh https://api.cashflow.omaression.com
+```
+
 ### Endpoints
 - Web: `http://localhost:3000`
 - API docs: `http://localhost:8000/docs`
@@ -32,7 +54,7 @@ This imports sample CSV files from `data/raw/` through the API import endpoint.
 
 ### API
 - built from `apps/api/Dockerfile`
-- expects `DATABASE_URL`
+- expects `DATABASE_URL` and `ALLOWED_ORIGINS`
 - runs `uvicorn app.main:app --host 0.0.0.0 --port 8000`
 
 ### Web
@@ -49,19 +71,12 @@ This imports sample CSV files from `data/raw/` through the API import endpoint.
 - The `str | None` union syntax in Python source requires Python 3.10+; the container uses 3.12 so this is handled automatically
 
 ## Production considerations
-This stack is good for local demos and portfolio evaluation. Before real deployment, add:
+This stack is good for local demos and portfolio evaluation. Before scaling beyond portfolio use, consider:
 - migration workflow (Alembic or equivalent)
 - persistent secrets handling
-- CORS policy for deployed frontend/backend split
 - health/readiness endpoints for container orchestration
 - reverse proxy / TLS termination
 - non-default credentials and managed Postgres
-
-## Recommended deploy targets
-For a portfolio deploy, the easiest path is:
-1. managed Postgres
-2. backend container on Render/Fly.io/Railway
-3. frontend on Vercel or container host
 
 ## Smoke checks
 After startup:
