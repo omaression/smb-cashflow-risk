@@ -1,0 +1,56 @@
+name: Release Draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version tag (for example v0.3.0)'
+        required: true
+        default: 'v0.3.0'
+
+jobs:
+  release-draft:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install API dependencies
+        working-directory: apps/api
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install web dependencies
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Run release prep checks
+        run: |
+          chmod +x scripts/prepare-release.sh
+          ./scripts/prepare-release.sh "${{ inputs.version }}"
+
+      - name: Create GitHub Release draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ inputs.version }}" \
+            --draft \
+            --title "${{ inputs.version }}" \
+            --notes-file docs/release-notes-v0.3.0.md

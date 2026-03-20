@@ -49,6 +49,12 @@ NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 ```
 Builds the stack, waits for health, seeds demo data, and prints the main URLs.
 
+### Release prep checks
+```bash
+./scripts/prepare-release.sh v0.3.0
+```
+Runs the key release validation steps before tagging.
+
 ### Manual demo path
 ```bash
 docker compose up --build -d
