@@ -20,9 +20,10 @@
 - [ ] publish GitHub Release
 
 ## Deploy (preferred)
+- [ ] Render blueprint/config committed
 - [ ] hosted frontend reachable
 - [ ] hosted backend reachable
-- [ ] demo data path works in hosted env
+- [ ] demo data path works in hosted env or is clearly documented as follow-up
 - [ ] custom domain configured if straightforward
 
 ## Non-blocking if time slips

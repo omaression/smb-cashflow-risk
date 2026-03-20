@@ -94,16 +94,18 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - architecture tradeoffs: `docs/architecture-tradeoffs.md`
 - portfolio writeup: `docs/portfolio-writeup.md`
 - deployment notes: `docs/deployment-notes.md`
+- render deploy guide: `docs/deploy-render.md`
 - baseline model: `docs/baseline-model.md`
 - ML project-native readiness: `docs/ml-project-native-readiness.md`
 - ML transfer recommendation: `docs/ml-transfer-recommendation.md`
-- native ML readiness notes: `docs/ml-project-native-readiness.md`
 
 ## Reference docs
-- [Execution pipeline](docs/execution-pipeline.md)
+- [Execution overview](docs/execution-pipeline.md)
 - [Milestones](docs/milestones.md)
 - [Deployment notes](docs/deployment-notes.md)
+- [Render deploy guide](docs/deploy-render.md)
 - [Demo walkthrough](docs/demo-walkthrough.md)
+- [Release guide](docs/buildx-release-runbook-v0.3.0.md)
 - [Release checklist](docs/release-checklist-v0.3.0.md)
 
 ## Phase status
@@ -130,4 +132,3 @@ Changes to this project should follow a disciplined path:
 - review and validate before merge
 
 The public repo documents the outcomes and standards, not the internal orchestration details used to execute them.
- the internal orchestration details used to execute them.
