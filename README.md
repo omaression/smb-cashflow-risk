@@ -116,13 +116,11 @@ On current native sample data, this should produce a workflow-demo artifact rath
 ### Phase 4 — release
 - in progress: release notes, changelog, demo polish, and deployment/release checklist for `v0.3.0`
 
-## Workflow note
-This project uses `advanced-dispatcher` workflows. In practice that means:
-- parallel planning
-- judge-plan synthesis
-- a mandatory blueprint before implementation
-- implementation + tests
-- review-driven fixes
-- final validation before merge
+## Development note
+Changes to this project should follow a disciplined path:
+- clarify the outcome
+- create a concrete implementation blueprint
+- implement and test
+- review and validate before merge
 
-For major phases, the blueprint should be detailed enough that execution follows a concrete plan instead of improvising.
+The public repo documents the outcomes and standards, not the internal orchestration details used to execute them.

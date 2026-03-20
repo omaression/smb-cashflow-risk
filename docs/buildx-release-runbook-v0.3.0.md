@@ -48,15 +48,14 @@ Ship `smb-cashflow-risk` by tomorrow night as a **portfolio-grade MVP**:
 - deeper ML improvements
 - perfectionist infra work that threatens timeline
 
-## Blueprint
-### Concrete release blueprint
-1. Create a release checklist + changelog + release notes draft.
-2. Polish README/docs so a recruiter can understand the app and run the demo quickly.
-3. Strengthen the demo path so seeded local or hosted usage feels smooth and intentional.
-4. Prepare deployment notes for a hosted release; use provider URLs if custom domain setup drags.
-5. Run final validation across API tests, web build, Docker stack, seeded demo flow.
-6. Merge release-polish changes.
-7. Tag and publish `v0.3.0` with clear release notes.
+## Release blueprint
+- Create a release checklist, changelog, and release notes draft.
+- Polish README/docs so a recruiter can understand the app and run the demo quickly.
+- Strengthen the demo path so seeded local or hosted usage feels smooth and intentional.
+- Prepare deployment notes for a hosted release; use provider URLs if custom domain setup drags.
+- Run final validation across API tests, web build, Docker stack, and seeded demo flow.
+- Merge release-polish changes.
+- Tag and publish `v0.3.0` with clear release notes.
 
 ## Time-slip cut list
 If time slips, cut in this order:
@@ -79,3 +78,4 @@ Do **not** cut:
 - release tag chosen and checklist complete
 - demo path is obvious and tested
 - hosted deploy exists if feasible; provider URL acceptable if domain not finished
+ain not finished
