@@ -44,7 +44,7 @@ SMBs often do not fail because revenue is zero. They fail because cash arrives t
 - `is_late_15` label definition
 - rule-based baseline scoring workflow
 - versioned baseline metadata + evaluation artifacts for workflow credibility
-- exportable feature CSV for future model training/evaluation
+- external benchmark and native-readiness ML layers with explicit limitations
 
 ## Why it is portfolio-worthy
 This project is valuable because it is not just CRUD and not just a notebook. It sits in the middle:
@@ -56,8 +56,8 @@ This project is valuable because it is not just CRUD and not just a notebook. It
 That combination is closer to how real internal AI/analytics tools get built.
 
 ## What I would build next
-- trained late-payment model on richer data
-- evaluation report with calibration and threshold analysis
+- richer native historical data for future learned-model work
+- calibration and threshold analysis once enough native evidence exists
 - scenario simulation for delayed top-customer payments
-- deployment/containerization polish
+- production deployment polish
 - more refined frontend states and design system polish
