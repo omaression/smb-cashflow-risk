@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: smb-cashflow-risk-api
+    runtime: docker
+    repo: https://github.com/omaression/smb-cashflow-risk
+    rootDir: .
+    dockerfilePath: ./apps/api/Dockerfile
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: smb-cashflow-risk-db
+          property: connectionString
+
+  - type: web
+    name: smb-cashflow-risk-web
+    runtime: docker
+    repo: https://github.com/omaression/smb-cashflow-risk
+    rootDir: .
+    dockerfilePath: ./apps/web/Dockerfile
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: INTERNAL_API_BASE_URL
+        value: https://smb-cashflow-risk-api.onrender.com/api/v1
+      - key: NEXT_PUBLIC_API_BASE_URL
+        value: https://smb-cashflow-risk-api.onrender.com/api/v1
+
+databases:
+  - name: smb-cashflow-risk-db
+    databaseName: smb_cashflow_risk
+    user: smb_cashflow_risk
+    plan: starter
