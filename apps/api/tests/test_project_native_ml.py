@@ -28,9 +28,10 @@ def test_project_native_runner_defers_training_on_tiny_data(seed_data) -> None:
     finally:
         pass
 
-    assert 'Deferred training' in message
+    assert 'deferred' in message.lower()
     assert any(path.name.endswith('.json') for path in output_dir.iterdir())
     assert any(path.name.endswith('.md') for path in output_dir.iterdir())
+    assert not any(path.name.endswith('.joblib') for path in output_dir.iterdir())
 
 
 def test_project_native_feature_rows_are_too_small_for_training(seed_data) -> None:

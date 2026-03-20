@@ -7,7 +7,6 @@ from pathlib import Path
 from app.ml.adapters import ProjectNativeInvoiceAdapter
 from app.ml.config import RunConfig
 from app.ml.reporting.project_native import write_native_workflow_demo
-from app.ml.training import train_dataset_pipeline
 
 
 class NativePipelineDeferred(Exception):

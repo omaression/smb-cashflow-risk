@@ -85,6 +85,8 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - portfolio writeup: `docs/portfolio-writeup.md`
 - deployment notes: `docs/deployment-notes.md`
 - baseline model: `docs/baseline-model.md`
+- ML project-native readiness: `docs/ml-project-native-readiness.md`
+- ML transfer recommendation: `docs/ml-transfer-recommendation.md`
 
 ## Reference docs
 - [Execution pipeline](docs/execution-pipeline.md)

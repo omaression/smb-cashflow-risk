@@ -14,9 +14,9 @@ Build a project-native ML pipeline path that can honestly defer learned-model cl
 6. test — DONE
 7. simplify — DONE
 8. retest — DONE
-9. review-resolve-a — PENDING
-10. test-a — PENDING
-11. review-resolve-b — PENDING
+9. review-resolve-a — DONE
+10. test-a — IN PROGRESS
+11. review-resolve-b — DONE
 12. final-test — PENDING
 
 ## Judge-plan synthesis
