@@ -1,7 +1,12 @@
+from contextlib import asynccontextmanager
+from collections.abc import AsyncGenerator
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
+from app.database import Base, engine
+from app.models import Customer, DailyCashSnapshot, Invoice, Payment  # noqa: F401 — ensure models registered
 from app.routers.customers import router as customers_router
 from app.routers.dashboard import router as dashboard_router
 from app.routers.forecast import router as forecast_router
@@ -9,7 +14,14 @@ from app.routers.health import router as health_router
 from app.routers.ingest import router as ingest_router
 from app.routers.invoices import router as invoices_router
 
-app = FastAPI(title=settings.app_name)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    Base.metadata.create_all(bind=engine)
+    yield
+
+
+app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
