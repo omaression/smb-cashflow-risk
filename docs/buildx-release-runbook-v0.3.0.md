@@ -1,68 +1,52 @@
-# Buildx Runbook — `v0.3.0` Release
-
-Branch: `feat/release-runbook-v1`
+# Release Guide — `v0.3.0`
 
 ## Goal
-Ship `smb-cashflow-risk` by tomorrow night as a **portfolio-grade MVP**:
-- polished end-to-end demo
+Ship `smb-cashflow-risk` as a **portfolio-grade MVP** with:
+- a polished end-to-end demo
 - clean docs
 - honest ML framing
 - release notes + changelog + SemVer tag
-- public deploy preferred
-- custom domain preferred but not release-blocking
+- a public deploy if feasible within the release window
 
-## Step status
-1. parallel-plan-a — DONE (`uploads/release-plan-codex.md`)
-2. parallel-plan-b — DONE (`uploads/release-plan-glm5.md`)
-3. judge-plan — DONE
-4. blueprint — DONE
-5. boilerplate — IN PROGRESS
-6. implement — PENDING
-7. test — PENDING
-8. simplify — PENDING
-9. retest — PENDING
-10. review-resolve-a — PENDING
-11. test-a — PENDING
-12. review-resolve-b — PENDING
-13. final-test — PENDING
+## Release strategy
+For `v0.3.0`, the product should optimize for:
+- stability over feature creep
+- demo clarity over extra surface area
+- honest ML positioning over exaggerated model claims
+- strong documentation over internal process visibility
 
-## Judge-plan synthesis
-### Release strategy
-- release as **v0.3.0**
-- keep runtime scoring rule-based for stability
-- treat ML work as credibility/benchmark infrastructure, not production-ready predictive proof
-- prioritize demo flow, docs, release artifacts, and deployability over new features
+Runtime scoring should remain rule-based for this release.
+The ML layers should be presented as credibility and benchmark infrastructure, not as production-ready scoring replacements.
 
-### Scope included
+## Included in this release
 - release docs cleanup
 - README polish
 - changelog
 - release notes draft
-- demo walkthrough script / doc
+- demo walkthrough
 - deployment prep and smoke checks
-- final tag/release checklist
+- final release checklist
 
-### Scope explicitly excluded
+## Explicitly out of scope
 - new product features
 - runtime model replacement
 - deeper ML improvements
-- perfectionist infra work that threatens timeline
+- nonessential infrastructure work that threatens the timeline
 
 ## Release blueprint
-- Create a release checklist, changelog, and release notes draft.
-- Polish README/docs so a recruiter can understand the app and run the demo quickly.
-- Strengthen the demo path so seeded local or hosted usage feels smooth and intentional.
-- Prepare deployment notes for a hosted release; use provider URLs if custom domain setup drags.
-- Run final validation across API tests, web build, Docker stack, and seeded demo flow.
-- Merge release-polish changes.
-- Tag and publish `v0.3.0` with clear release notes.
+- finalize changelog and release notes
+- polish README/docs for recruiter readability
+- make the demo path smooth and obvious
+- verify Docker + seed + app smoke flow
+- attempt a public deploy if practical
+- tag and publish `v0.3.0`
 
 ## Time-slip cut list
 If time slips, cut in this order:
 1. custom domain setup
-2. cosmetic UI polish beyond obvious issues
-3. extra release-note embellishment
-4. deployment extras beyond one stable hosted URL
+2. extra cosmetic polish beyond obvious cleanup
+3. release-note embellishment
+4. deployment extras beyond one stable public URL
 
 Do **not** cut:
 - changelog
@@ -71,11 +55,11 @@ Do **not** cut:
 - demo flow clarity
 - honest docs
 
-## Done criteria by tomorrow night
-- repo main is clean and documented
-- changelog exists
-- release notes are ready
-- release tag chosen and checklist complete
-- demo path is obvious and tested
-- hosted deploy exists if feasible; provider URL acceptable if domain not finished
-ain not finished
+## Done criteria
+This release is ready when:
+- `main` is clean and documented
+- changelog and release notes are finalized
+- demo path is tested and clear
+- final smoke checks pass
+- `v0.3.0` is tagged and published
+- a hosted demo exists if feasible, with provider URL acceptable if custom domain is not finished

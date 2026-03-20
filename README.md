@@ -91,7 +91,7 @@ On current native sample data, this should produce a workflow-demo artifact rath
 - baseline model: `docs/baseline-model.md`
 - ML project-native readiness: `docs/ml-project-native-readiness.md`
 - ML transfer recommendation: `docs/ml-transfer-recommendation.md`
-- buildx native runbook: `docs/buildx-ml-project-native-runbook.md`
+- native ML readiness notes: `docs/ml-project-native-readiness.md`
 
 ## Reference docs
 - [Execution pipeline](docs/execution-pipeline.md)
@@ -124,3 +124,4 @@ Changes to this project should follow a disciplined path:
 - review and validate before merge
 
 The public repo documents the outcomes and standards, not the internal orchestration details used to execute them.
+ the internal orchestration details used to execute them.
