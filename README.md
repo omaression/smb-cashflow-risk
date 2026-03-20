@@ -50,6 +50,12 @@ NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 ./scripts/demo.sh
 ```
 
+### One-command release demo bootstrap
+```bash
+./scripts/release-demo.sh
+```
+Builds the stack, waits for health, seeds demo data, and prints the main URLs.
+
 ### Export invoice features for baseline modeling
 ```bash
 ./scripts/export-invoice-features.py

@@ -5,6 +5,12 @@ Show the project as a polished portfolio MVP in under 3 minutes.
 
 ## Local demo path
 ### 1. Start services
+Preferred path:
+```bash
+./scripts/release-demo.sh
+```
+
+Equivalent manual path:
 ```bash
 docker compose up --build -d
 sleep 10
