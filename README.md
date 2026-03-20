@@ -13,6 +13,10 @@ A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next
 - **Frontend:** Next.js / React / TypeScript
 - **Infra:** Docker, docker-compose
 
+## License
+Code in this repository is licensed under **Apache-2.0**.
+External datasets, benchmarks, and third-party sources may have separate licenses and usage constraints.
+
 ## Quick start (Docker — recommended)
 ```bash
 git clone https://github.com/omaression/smb-cashflow-risk.git
