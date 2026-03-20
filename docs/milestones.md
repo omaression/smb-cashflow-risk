@@ -45,4 +45,12 @@
 - [x] Portfolio writeup
 - [x] Baseline evaluation credibility layer
 - [x] External benchmark pipelines
-- [ ] Project-native ML readiness pipeline
+- [x] Project-native ML readiness pipeline
+
+## Milestone 6 — release prep
+- [x] Changelog draft
+- [x] Release notes draft
+- [x] Demo walkthrough
+- [x] Release checklist
+- [x] Release-safe Docker/demo optimization
+- [x] Deploy prep guide and Render blueprint

@@ -15,6 +15,7 @@ This release delivers a complete end-to-end demo experience for SMB receivables 
 ## Highlights
 - full dashboard + invoice/customer detail flow
 - reproducible local demo via Docker
+- one-command demo bootstrap with `./scripts/release-demo.sh`
 - clear deployment and demo documentation
 - baseline ML credibility layer with workflow-demo evaluation artifacts
 - separate external benchmark pipelines for IBM and Skywalker datasets
@@ -31,6 +32,12 @@ This release delivers a complete end-to-end demo experience for SMB receivables 
 - not a claim that external benchmark metrics transfer directly into production behavior
 
 ## Recommended demo path
+### Fastest path
+```bash
+./scripts/release-demo.sh
+```
+
+### Manual path
 1. start the Docker stack
 2. seed the sample data
 3. open the dashboard
