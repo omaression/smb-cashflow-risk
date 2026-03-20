@@ -16,7 +16,7 @@
 
 ## Release hygiene
 - [ ] merge release-prep PR(s)
-- [ ] run `./scripts/prepare-release.sh v0.3.0`
+- [ ] run `./scripts/prepare-release.sh v0.3.0` (or `./scripts/predeploy-rehearsal.sh` for full morning rehearsal)
 - [ ] create tag `v0.3.0`
 - [ ] publish GitHub Release
 
