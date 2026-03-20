@@ -20,12 +20,17 @@ class IngestResponse(BaseModel):
     errors: list[IngestRowError]
 
 
+class TopRiskyCustomer(BaseModel):
+    id: str
+    name: str
+
+
 class DashboardSummaryResponse(BaseModel):
     total_ar: float
     overdue_ar: float
     open_invoice_count: int
     risky_invoice_count: int
-    top_risky_customers: list[str]
+    top_risky_customers: list[TopRiskyCustomer]
     projected_cash_balances: dict[str, float]
 
 

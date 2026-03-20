@@ -18,7 +18,7 @@ export type DashboardSummary = {
   overdue_ar: number;
   open_invoice_count: number;
   risky_invoice_count: number;
-  top_risky_customers: string[];
+  top_risky_customers: { id: string; name: string }[];
   projected_cash_balances: Record<string, number>;
 };
 

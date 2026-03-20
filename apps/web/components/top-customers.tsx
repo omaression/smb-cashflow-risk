@@ -1,21 +1,16 @@
 import Link from "next/link";
 
-import { sampleCustomers } from "@/lib/customers";
-
-export function TopCustomers({ customers }: { customers: string[] }) {
+export function TopCustomers({ customers }: { customers: { id: string; name: string }[] }) {
   return (
     <div className="panel">
       <h2>Top risky customers</h2>
-      <p className="muted">Highest-priority counterparties based on current seeded data.</p>
+      <p className="muted">Highest-priority counterparties based on current receivables exposure.</p>
       <ol>
-        {customers.map((customer) => {
-          const match = sampleCustomers.find((entry) => entry.name === customer);
-          return (
-            <li key={customer} style={{ marginBottom: 10 }}>
-              {match ? <Link href={`/customers/${match.id}`}>{customer}</Link> : customer}
-            </li>
-          );
-        })}
+        {customers.map((customer) => (
+          <li key={customer.id} style={{ marginBottom: 10 }}>
+            <Link href={`/customers/${customer.id}`}>{customer.name}</Link>
+          </li>
+        ))}
       </ol>
     </div>
   );

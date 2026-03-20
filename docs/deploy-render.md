@@ -1,36 +1,61 @@
 # Render Deployment Guide
 
 ## Overview
-The fastest realistic hosted deployment path for `smb-cashflow-risk` is:
-- Render PostgreSQL
-- Render web service for FastAPI API
-- Render web service for Next.js frontend
+The production deployment splits across two platforms:
+- **Vercel** — Next.js frontend (primary)
+- **Render** — FastAPI API + managed PostgreSQL
 
-This is a pragmatic portfolio deploy path, not a full production hardening guide.
+Render also hosts a backup frontend web service for redundancy.
 
 ## Files
-- `render.yaml` provides a starting blueprint for the services and database.
+- `render.yaml` — Render blueprint for API, backup web, and database
+- `apps/web/vercel.json` — Vercel project config for the Next.js frontend
 
-## Deployment steps
+## Render deployment steps
 1. Push `main` to GitHub.
 2. In Render, create a new Blueprint deployment from the repo.
 3. Confirm the following resources:
-   - `smb-cashflow-risk-db`
-   - `smb-cashflow-risk-api`
-   - `smb-cashflow-risk-web`
+   - `smb-cashflow-risk-db` (PostgreSQL)
+   - `smb-cashflow-risk-api` (FastAPI)
+   - `smb-cashflow-risk-web` (backup frontend)
 4. Wait for the database to provision and services to build.
-5. After deploy, visit the API and web URLs.
+5. After deploy, verify the API at `https://api.cashflow.omaression.com/docs`.
+
+## Vercel deployment steps
+1. Import the repo in Vercel.
+2. Set the root directory to `apps/web`.
+3. Set environment variables:
+   - `NEXT_PUBLIC_API_BASE_URL=https://api.cashflow.omaression.com/api/v1`
+   - `INTERNAL_API_BASE_URL=https://api.cashflow.omaression.com/api/v1`
+4. Deploy. Vercel auto-detects Next.js.
+
+## Cloudflare DNS
+Add two CNAME records (proxied):
+- `cashflow` → Vercel deployment URL (e.g., `cname.vercel-dns.com`)
+- `api.cashflow` → Render API service URL (e.g., `smb-cashflow-risk-api.onrender.com`)
+
+## Seeding demo data on hosted deploy
+```bash
+./scripts/seed-remote.sh https://api.cashflow.omaression.com
+```
 
 ## Required follow-up checks
 - API docs reachable at `/docs`
-- web dashboard loads successfully
+- Web dashboard loads successfully
+- CORS headers present (check browser console)
 - API/web environment variables point to the deployed API URL, not localhost
 
-## Demo data note
-This project seeds local demo data via `scripts/seed-docker.sh`.
-For hosted deployment, you will need a follow-up path to load demo data into the hosted database, either by:
-- temporary admin/import route usage
-- one-time manual CSV import flow
-- small deployment-side bootstrap script
+## Environment variables
 
-For `v0.3.0`, a hosted deploy is preferred but not release-blocking if local Docker demo remains the primary verified path.
+### API (Render)
+| Variable | Value |
+|----------|-------|
+| `APP_ENV` | `production` |
+| `DATABASE_URL` | from Render managed Postgres |
+| `ALLOWED_ORIGINS` | `https://cashflow.omaression.com` |
+
+### Web (Vercel)
+| Variable | Value |
+|----------|-------|
+| `NEXT_PUBLIC_API_BASE_URL` | `https://api.cashflow.omaression.com/api/v1` |
+| `INTERNAL_API_BASE_URL` | `https://api.cashflow.omaression.com/api/v1` |

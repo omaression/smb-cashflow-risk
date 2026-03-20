@@ -21,5 +21,8 @@ def test_build_dashboard_summary_uses_ranked_portfolio(seed_data) -> None:
     assert float(summary.overdue_ar) == 31410.0
     assert summary.open_invoice_count == 3
     assert summary.risky_invoice_count == 2
-    assert summary.top_risky_customers == ["Northstar Dental Group", "Riverbend Industrial Supply"]
+    assert summary.top_risky_customers == [
+        {"id": "CUST-001", "name": "Northstar Dental Group"},
+        {"id": "CUST-002", "name": "Riverbend Industrial Supply"},
+    ]
     assert set(summary.projected_cash_balances.keys()) == {"7", "14", "30"}

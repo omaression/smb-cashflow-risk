@@ -5,14 +5,15 @@ export function CashForecastChart({ balances }: { balances: Record<string, numbe
   return (
     <div className="panel">
       <h2>Cash forecast</h2>
-      <p className="muted">Projected closing cash balances across the primary MVP horizons.</p>
-      <div className="chart">
+      <p className="muted">Projected closing cash balances across the primary horizons.</p>
+      <div className="chart" role="img" aria-label="Bar chart showing projected cash balances at 7, 14, and 30 day horizons">
         {entries.map(([horizon, value]) => {
           const height = Math.max((value / maxValue) * 180, 20);
           return (
             <div key={horizon} className="bar-wrap">
+              <div className="bar-value">${value.toLocaleString()}</div>
               <div className="bar" style={{ height }} />
-              <div className="bar-label">{horizon}d · ${value.toLocaleString()}</div>
+              <div className="bar-label">{horizon}d</div>
             </div>
           );
         })}

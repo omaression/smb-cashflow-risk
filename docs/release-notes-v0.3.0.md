@@ -4,22 +4,34 @@
 `smb-cashflow-risk` `v0.3.0` is the first **portfolio-grade MVP** release.
 
 This release delivers a complete end-to-end demo experience for SMB receivables risk:
-- FastAPI backend
-- Next.js frontend
-- seeded demo data
-- rule-based invoice risk scoring
-- collections prioritization
-- Dockerized local stack
+- FastAPI backend with CORS and configurable origins
+- Next.js frontend with polished UI, favicon, and OG metadata
+- seeded demo data with remote seeding support
+- rule-based invoice risk scoring with explainable signals
+- collections prioritization and customer drill-down
+- Dockerized local stack and hosted deployment on Vercel + Render
 - honest ML credibility and benchmark artifacts
 
 ## Highlights
 - full dashboard + invoice/customer detail flow
 - reproducible local demo via Docker
 - one-command demo bootstrap with `./scripts/release-demo.sh`
+- hosted deployment: Vercel (frontend) + Render (API + Postgres) + Cloudflare DNS
+- remote seeding via `./scripts/seed-remote.sh`
 - clear deployment and demo documentation
 - baseline ML credibility layer with workflow-demo evaluation artifacts
 - separate external benchmark pipelines for IBM and Skywalker datasets
 - project-native ML readiness path that explicitly defers fake model claims on tiny native data
+- top risky customers now link directly to customer detail pages
+- UI polish: footer branding, chart value labels, cleaned copy, critical risk badge
+
+## Deployment
+```
+cashflow.omaression.com       → Vercel (Next.js frontend)
+api.cashflow.omaression.com   → Render (FastAPI API)
+Render managed PostgreSQL      → internal connection
+Cloudflare                     → DNS + proxy
+```
 
 ## What this release is
 - a polished MVP for portfolio presentation
