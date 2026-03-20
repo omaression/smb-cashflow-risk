@@ -16,6 +16,7 @@
 
 ## Release hygiene
 - [ ] merge release-prep PR(s)
+- [ ] run `./scripts/prepare-release.sh v0.3.0`
 - [ ] create tag `v0.3.0`
 - [ ] publish GitHub Release
 
