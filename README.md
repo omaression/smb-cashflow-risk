@@ -9,6 +9,7 @@ A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next
 - explain risk signals and recommend collections actions
 - project near-term cash balances
 - expose an MVP dashboard for quick review
+- surface ML evidence, benchmark context, and native-readiness status without overclaiming runtime maturity
 
 ## Stack
 - **Backend:** FastAPI, SQLAlchemy, PostgreSQL, Pydantic, pytest
@@ -117,6 +118,7 @@ On current native sample data, this produces a workflow-demo artifact rather tha
 - baseline model: `docs/baseline-model.md`
 - ML project-native readiness: `docs/ml-project-native-readiness.md`
 - ML transfer recommendation: `docs/ml-transfer-recommendation.md`
+- release blueprint for v0.4.0 / v0.5.0: `docs/release-blueprint-v0.4.0-v0.5.0.md`
 
 ## Reference docs
 - [Execution overview](docs/execution-pipeline.md)
@@ -137,11 +139,15 @@ On current native sample data, this produces a workflow-demo artifact rather tha
 ### Phase 2 — reliability and delivery
 - done: Docker stack, deployment notes, CI, and review workflows are in place
 
-### Phase 3 — ML credibility
+### Phase 3 — ML credibility foundations
 - done: baseline evaluation credibility layer, external benchmark pipelines, and project-native ML readiness path are in place
 
-### Phase 4 — release
-- done: UI polish, CORS, deployment config (Vercel + Render + Cloudflare), release notes, and final demo readiness for `v0.3.0`
+### Phase 4 — v0.4.0 ML credibility release
+- done: ML evidence API endpoints, runtime scoring provenance in the UI, and an ML evidence page are in place
+- outcome: the project now explains what is live, what is benchmark evidence, and why native learned runtime remains deferred
+
+### Phase 5 — next release direction
+- next: bring-your-own-data trial flow (`v0.5.0`) so a company can try the product with its own CSV exports without manual API work
 
 ## Development note
 This public repo documents outcomes, usage, architecture, decisions, and limitations.
