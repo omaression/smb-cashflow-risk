@@ -7,7 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import Base, engine
-from app.models import Customer, DailyCashSnapshot, Invoice, Payment  # noqa: F401 — ensure models registered
+from app.models import (  # noqa: F401 — ensure models registered
+    Customer,
+    DailyCashSnapshot,
+    DataQualityProfile,
+    ImportFile,
+    ImportJob,
+    Invoice,
+    Payment,
+    TrialWorkspace,
+)
 
 logger = logging.getLogger(__name__)
 from app.routers.customers import router as customers_router
@@ -17,6 +26,7 @@ from app.routers.health import router as health_router
 from app.routers.ingest import router as ingest_router
 from app.routers.invoices import router as invoices_router
 from app.routers.ml import router as ml_router
+from app.routers.trial import router as trial_router
 
 
 @asynccontextmanager
@@ -45,3 +55,4 @@ app.include_router(customers_router, prefix=settings.api_prefix)
 app.include_router(forecast_router, prefix=settings.api_prefix)
 app.include_router(ingest_router, prefix=settings.api_prefix)
 app.include_router(ml_router, prefix=settings.api_prefix)
+app.include_router(trial_router, prefix=settings.api_prefix)
