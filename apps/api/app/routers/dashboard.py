@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.schemas import DashboardSummaryResponse, TopRiskyCustomer
+from app.services.model_version import CURRENT_MODEL_VERSION
 from app.services.portfolio import build_dashboard_summary
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
@@ -22,4 +23,6 @@ def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummaryResp
         risky_invoice_count=summary.risky_invoice_count,
         top_risky_customers=[TopRiskyCustomer(**c) for c in summary.top_risky_customers],
         projected_cash_balances=summary.projected_cash_balances,
+        runtime_model_version=CURRENT_MODEL_VERSION.version,
+        ml_status_badge="rules-only",
     )

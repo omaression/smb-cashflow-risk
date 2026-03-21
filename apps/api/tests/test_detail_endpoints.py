@@ -11,6 +11,8 @@ def test_invoice_detail_endpoint(client, seed_data) -> None:
     assert payload["overdue_days"] == 4
     assert len(payload["payment_history"]) == 2
     assert payload["risk_bucket"] in {"low", "medium", "high"}
+    assert payload["model_version"] == "v0.1.0-rules"
+    assert payload["score_type"] == "rule-based"
 
 
 def test_customer_detail_endpoint(client, seed_data) -> None:

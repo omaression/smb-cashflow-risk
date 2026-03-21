@@ -54,3 +54,17 @@
 - [x] Release checklist
 - [x] Release-safe Docker/demo optimization
 - [x] Deploy prep guide and Render blueprint
+
+## Milestone 7 — v0.4.0 ML credibility
+- [ ] Add ML overview/readiness/benchmark API endpoints
+- [ ] Add ML evidence page in web app
+- [ ] Surface runtime scoring provenance in dashboard/detail views
+- [ ] Normalize artifact-backed ML summaries for public consumption
+- [ ] Add tests for ML artifact handling and honesty guardrails
+
+## Milestone 8 — v0.5.0 bring-your-own-data trial
+- [ ] Add CSV preview/validation flow
+- [ ] Add lightweight trial dataset/workspace scoping
+- [ ] Add user-facing upload wizard and template downloads
+- [ ] Scope summary/risk/detail views to imported trial data
+- [ ] Add plain-language validation and data-quality warnings

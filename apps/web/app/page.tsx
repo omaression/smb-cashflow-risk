@@ -22,6 +22,9 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="link-row">
+          <a className="link-chip" href="/ml">
+            ML evidence
+          </a>
           {links.docs ? (
             <a className="link-chip" href={links.docs} target="_blank" rel="noreferrer">
               API docs
@@ -36,6 +39,24 @@ export default async function DashboardPage() {
       </section>
 
       <SummaryCards summary={summary} />
+
+      <section style={{ marginTop: 16 }}>
+        <div className="panel ml-banner">
+          <div>
+            <div className="section-kicker">Scoring status</div>
+            <h2>Runtime scoring is intentionally conservative</h2>
+            <p className="muted" style={{ marginTop: 8 }}>
+              The live invoice queue is powered by <strong>{summary.runtime_model_version ?? "the current rules model"}</strong>. External benchmarks and project-native readiness are surfaced separately so the app stays honest about what is live versus experimental.
+            </p>
+          </div>
+          <div className="link-row" style={{ marginTop: 12 }}>
+            <span className="badge medium">{summary.ml_status_badge ?? "rules-only"}</span>
+            <a className="link-chip" href="/ml">
+              Inspect ML evidence
+            </a>
+          </div>
+        </div>
+      </section>
 
       <section className="grid two-col" style={{ marginTop: 16 }}>
         {Object.keys(summary.projected_cash_balances).length > 0 ? (

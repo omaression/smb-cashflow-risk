@@ -32,6 +32,8 @@ class DashboardSummaryResponse(BaseModel):
     risky_invoice_count: int
     top_risky_customers: list[TopRiskyCustomer]
     projected_cash_balances: dict[str, float]
+    runtime_model_version: str | None = None
+    ml_status_badge: str | None = None
 
 
 class InvoiceRiskItem(BaseModel):
@@ -85,6 +87,8 @@ class InvoiceDetailResponse(BaseModel):
     risk_bucket: str
     top_reason_codes: list[str]
     recommended_action: str
+    model_version: str | None = None
+    score_type: str | None = None
 
 
 class CustomerOpenInvoiceResponse(BaseModel):

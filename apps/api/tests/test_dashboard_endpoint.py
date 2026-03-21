@@ -9,3 +9,5 @@ def test_dashboard_summary_endpoint_uses_loaded_portfolio(client, seed_data) -> 
     assert payload["risky_invoice_count"] == 2
     assert payload["top_risky_customers"][0] == {"id": "CUST-001", "name": "Northstar Dental Group"}
     assert set(payload["projected_cash_balances"].keys()) == {"7", "14", "30"}
+    assert payload["runtime_model_version"] == "v0.1.0-rules"
+    assert payload["ml_status_badge"] == "rules-only"
