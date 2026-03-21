@@ -117,13 +117,27 @@ class CustomerDetailResponse(BaseModel):
     open_invoices: list[CustomerOpenInvoiceResponse]
 
 
+class FieldMappingResponse(BaseModel):
+    canonical_field: str
+    source_field: str | None = None
+    confidence: float = 0.0
+    required: bool = False
+    resolved: bool = False
+    alternatives: list[str] = []
+
+
 class PreviewFileDetectionResponse(BaseModel):
     filename: str
     detected_role: str | None
     detection_confidence: float | None
     row_count: int
+    headers: list[str]
+    detection_reasons: list[str]
     parse_warnings: list[str]
-    suggested_mapping: dict[str, dict[str, str | float]]
+    suggested_mapping: dict[str, dict[str, str | float | bool | list[str] | None]]
+    alternative_roles: list[dict[str, str | float]] = []
+    required_missing: list[str] = []
+    ambiguity_warnings: list[str] = []
 
 
 class TrialQualityProfileResponse(BaseModel):

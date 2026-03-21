@@ -53,6 +53,7 @@ class ImportFile(Base):
     row_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     parse_warnings_json: Mapped[str | None] = mapped_column(Text)
     mapping_json: Mapped[str | None] = mapped_column(Text)
+    profiling_json: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
 
     import_job = relationship("ImportJob", back_populates="files")

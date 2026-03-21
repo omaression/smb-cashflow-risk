@@ -6,17 +6,22 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
+from app.ingestion.file_roles import detect_file_role
+from app.ingestion.role_mapping import suggest_field_mappings
 from app.models.trial_workspace import DataQualityProfile, ImportFile, ImportJob, TrialWorkspace
 
 
-def create_preview_workspace(session: Session, *, filenames: list[str]) -> TrialWorkspace:
+def create_preview_workspace(session: Session, *, uploads: list[tuple[str, bytes]]) -> TrialWorkspace:
+    detections = [detect_file_role(filename=filename, contents=contents) for filename, contents in uploads]
+    warning_count = sum(1 for detection in detections if detection.confidence < 0.7)
+
     workspace = TrialWorkspace(
         label="BYOD preview workspace",
         status="preview_ready",
         source_type="upload",
         data_quality_score=Decimal("56.00"),
         confidence_score=Decimal("48.00"),
-        warning_count=2,
+        warning_count=warning_count,
     )
     session.add(workspace)
     session.flush()
@@ -24,38 +29,55 @@ def create_preview_workspace(session: Session, *, filenames: list[str]) -> Trial
     import_job = ImportJob(
         workspace_id=workspace.id,
         status="preview_ready",
-        source_file_count=len(filenames),
-        preview_issue_count=1,
-        preview_warning_count=2,
+        source_file_count=len(uploads),
+        preview_issue_count=1 if uploads else 0,
+        preview_warning_count=warning_count,
         error_summary_json=json.dumps(
             {
                 "fatal": 0,
-                "high": 1 if filenames else 0,
-                "medium": 1 if filenames else 0,
-                "low": 1 if filenames else 0,
+                "high": 1 if uploads else 0,
+                "medium": warning_count,
+                "low": len(uploads),
             }
         ),
     )
     session.add(import_job)
     session.flush()
 
-    for filename in filenames:
+    for (filename, _contents), detection in zip(uploads, detections, strict=False):
+        role = detection.role or "unknown"
+        mapping = suggest_field_mappings(role=role, headers=detection.headers)
+        field_payload = {
+            field.canonical_field: {
+                "source": field.source_field,
+                "confidence": field.confidence,
+                "required": field.required,
+                "resolved": field.resolved,
+                "alternatives": field.alternatives,
+            }
+            for field in mapping.field_mappings
+        }
+        field_payload["_alternatives"] = [
+            {"role": role, "confidence": score} for role, score in detection.alternatives
+        ]
         session.add(
             ImportFile(
                 import_job_id=import_job.id,
                 filename=filename,
-                detected_role="unpaid_invoice_export",
-                detection_confidence=Decimal("72.00"),
-                row_count=0,
-                parse_warnings_json=json.dumps([
-                    "Column mapping is still provisional until preview confirmation.",
-                ]),
-                mapping_json=json.dumps(
+                detected_role=detection.role,
+                detection_confidence=Decimal(str(detection.confidence * 100)) if detection.confidence else None,
+                row_count=detection.row_count,
+                parse_warnings_json=json.dumps(
+                    detection.reasons
+                    + mapping.ambiguity_warnings
+                    + ["Column mapping is still provisional until preview confirmation."]
+                ),
+                mapping_json=json.dumps(field_payload),
+                profiling_json=json.dumps(
                     {
-                        "invoice_id": {"source": "Invoice #", "confidence": 0.84},
-                        "customer_name": {"source": "Customer", "confidence": 0.79},
-                        "due_date": {"source": "Due Date", "confidence": 0.88},
-                        "outstanding_amount": {"source": "Amount Due", "confidence": 0.81},
+                        "headers": detection.headers,
+                        "reasons": detection.reasons,
+                        "required_missing": mapping.required_missing,
                     }
                 ),
             )
@@ -82,8 +104,8 @@ def create_preview_workspace(session: Session, *, filenames: list[str]) -> Trial
                 {
                     "fatal": 0,
                     "high": 1,
-                    "medium": 1,
-                    "low": 1,
+                    "medium": warning_count,
+                    "low": len(uploads),
                 }
             ),
         )

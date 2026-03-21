@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import json
 from uuid import UUID
 
@@ -40,20 +38,35 @@ def preview_import(files: list[UploadFile] = File(...), db: Session = Depends(ge
     if not files:
         raise HTTPException(status_code=400, detail="at least one file is required")
 
-    workspace = create_preview_workspace(db, filenames=[file.filename or "upload.csv" for file in files])
+    workspace = create_preview_workspace(
+        db,
+        uploads=[(file.filename or "upload.csv", file.file.read()) for file in files],
+    )
     latest_job = workspace.import_jobs[-1]
 
-    preview_files = [
-        PreviewFileDetectionResponse(
-            filename=file.filename,
-            detected_role=file.detected_role,
-            detection_confidence=float(file.detection_confidence) if file.detection_confidence is not None else None,
-            row_count=file.row_count,
-            parse_warnings=json.loads(file.parse_warnings_json or "[]"),
-            suggested_mapping=json.loads(file.mapping_json or "{}"),
+    preview_files = []
+    for file in latest_job.files:
+        mapping_payload = json.loads(file.mapping_json or "{}")
+        profiling_payload = json.loads(file.profiling_json or "{}")
+        alternative_roles = mapping_payload.pop("_alternatives", [])
+        preview_files.append(
+            PreviewFileDetectionResponse(
+                filename=file.filename,
+                detected_role=file.detected_role,
+                detection_confidence=float(file.detection_confidence) if file.detection_confidence is not None else None,
+                row_count=file.row_count,
+                headers=profiling_payload.get("headers", []),
+                detection_reasons=profiling_payload.get("reasons", []),
+                parse_warnings=json.loads(file.parse_warnings_json or "[]"),
+                suggested_mapping=mapping_payload,
+                alternative_roles=alternative_roles,
+                required_missing=profiling_payload.get("required_missing", []),
+                ambiguity_warnings=[
+                    warning for warning in json.loads(file.parse_warnings_json or "[]")
+                    if "Multiple columns map to" in warning
+                ],
+            )
         )
-        for file in latest_job.files
-    ]
 
     quality = _quality_payload(workspace)
     assert quality is not None
