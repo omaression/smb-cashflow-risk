@@ -66,7 +66,7 @@
 - [x] Add preview/import workflow for messy receivables uploads
 - [x] Add lightweight trial workspace scoping with import metadata
 - [x] Add file-role detection and user-confirmed schema mapping
-- [ ] Add normalization, validation, and reconciliation engine
+- [x] Add normalization, validation, and issue engine
 - [ ] Add data-quality / reliability scoring with recommendations
 - [ ] Add user-facing upload wizard, preview, and import flow
 - [ ] Scope summary/risk/detail/forecast views to imported trial data
