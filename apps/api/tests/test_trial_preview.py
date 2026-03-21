@@ -9,6 +9,12 @@ def test_trial_preview_endpoint_returns_workspace_summary(client) -> None:
     assert payload["status"] == "preview_ready"
     assert payload["source_file_count"] == 1
     assert payload["files"][0]["filename"] == "ugly-ar-export.csv"
+    assert payload["files"][0]["detected_role"] == "unpaid_invoice_export"
+    assert payload["files"][0]["row_count"] == 1
+    assert "invoice" in payload["files"][0]["headers"]
+    assert payload["files"][0]["detection_reasons"]
+    assert "external_invoice_id" in payload["files"][0]["suggested_mapping"]
+    assert payload["files"][0]["suggested_mapping"]["external_invoice_id"]["required"] is True
     assert payload["quality_profile"]["reliability_grade"] == "low"
     assert payload["quality_profile"]["recommendations"]
 
