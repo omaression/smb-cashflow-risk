@@ -1,6 +1,6 @@
 "use client";
 
-export default function Error({ reset }: { error: Error; reset: () => void }) {
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <main>
       <div className="panel" style={{ marginTop: 40 }}>
@@ -9,7 +9,14 @@ export default function Error({ reset }: { error: Error; reset: () => void }) {
           The web app could not reach the API or received an invalid response. Make sure the FastAPI service is
           running and that <code>NEXT_PUBLIC_API_BASE_URL</code> points to the correct backend.
         </p>
-        <button className="button" onClick={reset} type="button">
+        <details style={{ marginTop: 12 }}>
+          <summary style={{ cursor: "pointer", color: "#888" }}>Error details</summary>
+          <pre style={{ marginTop: 8, fontSize: "0.85rem", whiteSpace: "pre-wrap", wordBreak: "break-word", color: "#c44" }}>
+            {error.message}
+            {error.digest ? `\nDigest: ${error.digest}` : ""}
+          </pre>
+        </details>
+        <button className="button" onClick={reset} type="button" style={{ marginTop: 16 }}>
           Retry
         </button>
       </div>

@@ -107,11 +107,32 @@ async function fetchJson<T>(path: string): Promise<T> {
     throw new Error("API base URL is not configured. Set INTERNAL_API_BASE_URL (server) or NEXT_PUBLIC_API_BASE_URL (browser).");
   }
 
-  const response = await fetch(`${apiBaseUrl}${path}`, { cache: "no-store" });
-  if (!response.ok) {
-    throw new ApiError(response.status, `API request failed for ${path}: ${response.status}`);
+  const url = `${apiBaseUrl}${path}`;
+
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15_000);
+
+      const response = await fetch(url, { cache: "no-store", signal: controller.signal });
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        throw new ApiError(response.status, `API ${response.status} for ${path}`);
+      }
+      return (await response.json()) as T;
+    } catch (error) {
+      lastError = error;
+      if (error instanceof ApiError) throw error;
+      // Retry once for network/timeout errors (Render cold start)
+      if (attempt === 0) {
+        await new Promise((r) => setTimeout(r, 2_000));
+        continue;
+      }
+    }
   }
-  return (await response.json()) as T;
+  throw lastError;
 }
 
 export function getBrowserApiLinks() {
