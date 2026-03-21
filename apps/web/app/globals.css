@@ -101,7 +101,8 @@ h2 {
 /* ── Badge ────────────────────────────────────────────────────── */
 .badge {
   display: inline-flex;
-  padding: 4px 10px;
+  align-items: center;
+  padding: 5px 10px;
   border-radius: 999px;
   font-size: var(--text-sm);
   font-weight: 600;
@@ -466,8 +467,6 @@ code {
     border-radius: 10px;
     background: var(--panel);
   }
-
-  .invoice-queue tr:active { background: var(--panel-soft); }
 
   /* Risk-colored left border */
   .invoice-queue tr:has(.badge.high)     { border-left-color: var(--danger); }

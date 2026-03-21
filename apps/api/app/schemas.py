@@ -115,3 +115,43 @@ class CustomerDetailResponse(BaseModel):
     late_payment_ratio: float
     top_recommendation: str
     open_invoices: list[CustomerOpenInvoiceResponse]
+
+
+class PreviewFileDetectionResponse(BaseModel):
+    filename: str
+    detected_role: str | None
+    detection_confidence: float | None
+    row_count: int
+    parse_warnings: list[str]
+    suggested_mapping: dict[str, dict[str, str | float]]
+
+
+class TrialQualityProfileResponse(BaseModel):
+    completeness_score: float | None
+    consistency_score: float | None
+    coverage_score: float | None
+    history_depth_score: float | None
+    sample_size_score: float | None
+    overall_confidence_score: float | None
+    reliability_grade: str | None
+    recommendations: list[str]
+    issue_summary: dict[str, int]
+
+
+class ImportPreviewResponse(BaseModel):
+    workspace_id: str
+    status: str
+    source_file_count: int
+    files: list[PreviewFileDetectionResponse]
+    quality_profile: TrialQualityProfileResponse
+
+
+class TrialWorkspaceStatusResponse(BaseModel):
+    workspace_id: str
+    label: str
+    status: str
+    source_type: str
+    warning_count: int
+    data_quality_score: float | None
+    confidence_score: float | None
+    quality_profile: TrialQualityProfileResponse | None
