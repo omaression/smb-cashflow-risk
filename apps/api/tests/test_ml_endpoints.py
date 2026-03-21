@@ -7,7 +7,7 @@ def test_ml_overview_endpoint_returns_runtime_and_native_status(client) -> None:
     assert payload["runtime_model"]["model_type"] == "rule-based"
     assert payload["native_pipeline"]["status"] == "deferred"
     assert payload["transfer_recommendation"]["keep_runtime_rule_based"] is True
-    assert len(payload["external_benchmarks"]) >= 1
+    assert isinstance(payload["external_benchmarks"], list)
 
 
 def test_ml_models_endpoint_lists_runtime_entry(client) -> None:

@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from app.services.model_version import CURRENT_MODEL_VERSION
+
 ARTIFACTS_ROOT = Path(__file__).resolve().parents[4] / "artifacts"
 EVALUATIONS_DIR = ARTIFACTS_ROOT / "evaluations"
 ML_ROOT = ARTIFACTS_ROOT / "ml"
@@ -72,22 +74,21 @@ def list_model_entries() -> list[ArtifactModelEntry]:
     entries: list[ArtifactModelEntry] = []
 
     runtime = get_latest_runtime_evaluation()
-    if runtime is not None:
-        entries.append(
-            ArtifactModelEntry(
-                model_version=runtime["model_version"],
-                model_type=runtime.get("model_type", "rule-based"),
-                title="Runtime scoring baseline",
-                evaluation_status=runtime.get("evaluation_status", "unknown"),
-                generated_at=runtime.get("evaluated_at"),
-                summary="Current in-app scoring baseline used by the invoice risk queue.",
-                limitations=runtime.get("limitations", []),
-                metrics=None,
-                artifact_path=str(_latest_json(EVALUATIONS_DIR)),
-                dataset_key="runtime",
-                approved_for_runtime=True,
-            )
+    entries.append(
+        ArtifactModelEntry(
+            model_version=CURRENT_MODEL_VERSION.version,
+            model_type=CURRENT_MODEL_VERSION.model_type,
+            title="Runtime scoring baseline",
+            evaluation_status=(runtime or {}).get("evaluation_status", CURRENT_MODEL_VERSION.evaluation_status),
+            generated_at=(runtime or {}).get("evaluated_at"),
+            summary="Current in-app scoring baseline used by the invoice risk queue.",
+            limitations=(runtime or {}).get("limitations", CURRENT_MODEL_VERSION.notes),
+            metrics=None,
+            artifact_path=str(_latest_json(EVALUATIONS_DIR)) if _latest_json(EVALUATIONS_DIR) else "",
+            dataset_key="runtime",
+            approved_for_runtime=True,
         )
+    )
 
     native = get_latest_native_artifact()
     if native is not None:
