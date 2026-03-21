@@ -63,9 +63,9 @@
 - [ ] Add tests for ML artifact handling and honesty guardrails
 
 ## Milestone 8 — v0.5.0 bring-your-own-data trial
-- [ ] Add preview/import workflow for messy receivables uploads
-- [ ] Add lightweight trial workspace scoping with import metadata
-- [ ] Add file-role detection and user-confirmed schema mapping
+- [x] Add preview/import workflow for messy receivables uploads
+- [x] Add lightweight trial workspace scoping with import metadata
+- [x] Add file-role detection and user-confirmed schema mapping
 - [ ] Add normalization, validation, and reconciliation engine
 - [ ] Add data-quality / reliability scoring with recommendations
 - [ ] Add user-facing upload wizard, preview, and import flow
