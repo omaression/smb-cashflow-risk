@@ -385,6 +385,11 @@ code {
   .panel { padding: 16px; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .link-row { justify-content: center; }
+  .hero { align-items: center; }
+  .hero .link-row {
+    width: 100%;
+    justify-content: center;
+  }
 
   /* ── Generic stacked table (payment history, customer invoices) */
   .responsive-table:not(.invoice-queue),
