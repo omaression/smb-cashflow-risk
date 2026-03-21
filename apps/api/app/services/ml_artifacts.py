@@ -7,7 +7,28 @@ from typing import Any
 
 from app.services.model_version import CURRENT_MODEL_VERSION
 
-ARTIFACTS_ROOT = Path(__file__).resolve().parents[4] / "artifacts"
+
+def _find_artifacts_root() -> Path:
+    current = Path(__file__).resolve()
+
+    for candidate in [current.parent, *current.parents]:
+        artifacts_dir = candidate / "artifacts"
+        if artifacts_dir.is_dir():
+            return artifacts_dir
+
+    cwd = Path.cwd().resolve()
+    for candidate in [cwd, *cwd.parents]:
+        artifacts_dir = candidate / "artifacts"
+        if artifacts_dir.is_dir():
+            return artifacts_dir
+
+    # Safe fallback: point at a non-existent but well-formed local path so the
+    # service degrades gracefully instead of crashing app import on deployments
+    # that do not ship artifact files.
+    return current.parent / "artifacts"
+
+
+ARTIFACTS_ROOT = _find_artifacts_root()
 EVALUATIONS_DIR = ARTIFACTS_ROOT / "evaluations"
 ML_ROOT = ARTIFACTS_ROOT / "ml"
 PROJECT_NATIVE_DIR = ML_ROOT / "project_native"
@@ -37,6 +58,8 @@ def _load_json(path: Path) -> dict[str, Any] | None:
 
 
 def _latest_json(directory: Path) -> Path | None:
+    if not directory.exists():
+        return None
     candidates = [path for path in directory.glob("*.json") if path.name != ".gitkeep"]
     if not candidates:
         return None
@@ -74,6 +97,7 @@ def list_model_entries() -> list[ArtifactModelEntry]:
     entries: list[ArtifactModelEntry] = []
 
     runtime = get_latest_runtime_evaluation()
+    latest_runtime_path = _latest_json(EVALUATIONS_DIR)
     entries.append(
         ArtifactModelEntry(
             model_version=CURRENT_MODEL_VERSION.version,
@@ -84,13 +108,14 @@ def list_model_entries() -> list[ArtifactModelEntry]:
             summary="Current in-app scoring baseline used by the invoice risk queue.",
             limitations=(runtime or {}).get("limitations", CURRENT_MODEL_VERSION.notes),
             metrics=None,
-            artifact_path=str(_latest_json(EVALUATIONS_DIR)) if _latest_json(EVALUATIONS_DIR) else "",
+            artifact_path=str(latest_runtime_path) if latest_runtime_path else "",
             dataset_key="runtime",
             approved_for_runtime=True,
         )
     )
 
     native = get_latest_native_artifact()
+    latest_native_path = _latest_json(PROJECT_NATIVE_DIR)
     if native is not None:
         entries.append(
             ArtifactModelEntry(
@@ -102,7 +127,7 @@ def list_model_entries() -> list[ArtifactModelEntry]:
                 summary=native.get("small_dataset_warning", "Native ML artifact for readiness evaluation."),
                 limitations=native.get("limitations", []),
                 metrics=native.get("metrics"),
-                artifact_path=str(_latest_json(PROJECT_NATIVE_DIR)),
+                artifact_path=str(latest_native_path) if latest_native_path else "",
                 dataset_key="native",
                 approved_for_runtime=False,
             )
