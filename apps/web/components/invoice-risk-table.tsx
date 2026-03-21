@@ -8,7 +8,7 @@ export function InvoiceRiskTable({ invoices }: { invoices: InvoiceRiskItem[] }) 
     <div className="panel">
       <h2>Invoice risk queue</h2>
       <p className="muted">Decision-oriented receivables view for the next collections pass.</p>
-      <table className="table responsive-table" style={{ marginTop: 10 }}>
+      <table className="table responsive-table invoice-queue" style={{ marginTop: 10 }}>
         <thead>
           <tr>
             <th>Invoice</th>
