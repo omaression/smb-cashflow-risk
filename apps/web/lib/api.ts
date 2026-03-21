@@ -20,6 +20,8 @@ export type DashboardSummary = {
   risky_invoice_count: number;
   top_risky_customers: { id: string; name: string }[];
   projected_cash_balances: Record<string, number>;
+  runtime_model_version?: string | null;
+  ml_status_badge?: string | null;
 };
 
 export type InvoiceRiskItem = {
@@ -58,6 +60,8 @@ export type InvoiceDetail = {
   risk_bucket: "low" | "medium" | "high";
   top_reason_codes: string[];
   recommended_action: string;
+  model_version?: string | null;
+  score_type?: string | null;
 };
 
 export type CustomerOpenInvoice = {
@@ -84,6 +88,49 @@ export type CustomerDetail = {
   late_payment_ratio: number;
   top_recommendation: string;
   open_invoices: CustomerOpenInvoice[];
+};
+
+export type MlBenchmarkSummary = {
+  dataset_key: string;
+  name: string;
+  description: string;
+  target: string;
+  headline_metric: number | null;
+  winner: boolean;
+  caveats: string[];
+};
+
+export type MlOverview = {
+  runtime_model: {
+    version: string;
+    model_type: string;
+    target: string;
+    decision_threshold: number;
+    evaluation_status: string;
+    description: string;
+    features_used: string[];
+    notes: string[];
+    limitations: string[];
+  };
+  native_pipeline: {
+    status: string;
+    row_count: number;
+    positive_count: number;
+    min_rows_required: number;
+    min_positive_rows_required: number;
+    reason: string;
+    blockers: string[];
+    next_unlock_condition: string;
+    model_version?: string | null;
+    generated_at?: string | null;
+    small_dataset_warning?: string | null;
+    limitations?: string[];
+  };
+  external_benchmarks: MlBenchmarkSummary[];
+  transfer_recommendation: {
+    keep_runtime_rule_based: boolean;
+    summary: string;
+  };
 };
 
 function getBrowserApiBaseUrl(): string | undefined {
@@ -135,4 +182,8 @@ export async function getInvoiceDetail(invoiceId: string): Promise<InvoiceDetail
 
 export async function getCustomerDetail(customerId: string): Promise<CustomerDetail> {
   return fetchJson<CustomerDetail>(`/customers/${customerId}`);
+}
+
+export async function getMlOverview(): Promise<MlOverview> {
+  return fetchJson<MlOverview>("/ml/overview");
 }

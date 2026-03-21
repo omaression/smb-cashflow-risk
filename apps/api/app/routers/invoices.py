@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas import InvoiceDetailResponse, InvoiceRiskItem, PaymentHistoryItemResponse
 from app.services.details import get_invoice_detail
+from app.services.model_version import CURRENT_MODEL_VERSION
 from app.services.portfolio import rank_open_invoices
 
 router = APIRouter(prefix="/invoices", tags=["invoices"])
@@ -59,4 +60,6 @@ def get_invoice(invoice_id: str, db: Session = Depends(get_db)) -> InvoiceDetail
         risk_bucket=detail.risk_bucket,
         top_reason_codes=detail.top_reason_codes,
         recommended_action=detail.recommended_action,
+        model_version=CURRENT_MODEL_VERSION.version,
+        score_type=CURRENT_MODEL_VERSION.model_type,
     )

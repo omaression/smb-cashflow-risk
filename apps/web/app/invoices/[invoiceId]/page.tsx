@@ -60,6 +60,13 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
         <section className="grid two-col" style={{ marginTop: 16 }}>
           <div className="panel">
             <div className="section-kicker">Why this invoice is risky</div>
+            <div className="ml-inline-meta" style={{ marginTop: 10 }}>
+              <span className="badge medium">{invoice.score_type ?? "rule-based"}</span>
+              {invoice.model_version ? <span className="ml-inline-text">Scored by {invoice.model_version}</span> : null}
+              <Link className="ml-inline-link" href="/ml">
+                How scoring works
+              </Link>
+            </div>
             <div style={{ marginTop: 10 }}>
               <span className={`badge ${invoice.risk_bucket}`}>{invoice.risk_bucket}</span>
             </div>
