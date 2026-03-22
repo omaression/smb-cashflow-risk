@@ -23,6 +23,11 @@ class TrialWorkspace(Base):
 
     import_jobs = relationship("ImportJob", back_populates="workspace", cascade="all, delete-orphan")
     quality_profile = relationship("DataQualityProfile", back_populates="workspace", uselist=False, cascade="all, delete-orphan")
+    # Trial-scoped data relationships
+    customers = relationship("TrialCustomer", back_populates="workspace", cascade="all, delete-orphan")
+    invoices = relationship("TrialInvoice", back_populates="workspace", cascade="all, delete-orphan")
+    payments = relationship("TrialPayment", back_populates="workspace", cascade="all, delete-orphan")
+    cash_snapshots = relationship("TrialCashSnapshot", back_populates="workspace", cascade="all, delete-orphan")
 
 
 class ImportJob(Base):
@@ -54,6 +59,7 @@ class ImportFile(Base):
     parse_warnings_json: Mapped[str | None] = mapped_column(Text)
     mapping_json: Mapped[str | None] = mapped_column(Text)
     profiling_json: Mapped[str | None] = mapped_column(Text)
+    raw_rows_json: Mapped[str | None] = mapped_column(Text)  # Parsed row data for finalize
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
 
     import_job = relationship("ImportJob", back_populates="files")

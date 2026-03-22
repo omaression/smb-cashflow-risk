@@ -49,6 +49,16 @@ export type InvoicePaymentHistoryItem = {
   reference: string | null;
 };
 
+export type TrialWorkspace = {
+  workspace_id: string;
+  label: string;
+  status: string;
+  source_type: string;
+  warning_count: number;
+  data_quality_score: number | null;
+  confidence_score: number | null;
+};
+
 export type InvoiceDetail = {
   invoice_id: string;
   customer_id: string;
@@ -204,6 +214,10 @@ export async function getTrialInvoiceRisk(workspaceId: string): Promise<InvoiceR
   return fetchJson<InvoiceRiskItem[]>(`/trial/${workspaceId}/invoices/risk`);
 }
 
+export async function finalizeTrialImport(workspaceId: string): Promise<TrialWorkspace> {
+  return postJson<TrialWorkspace>(`/trial/${workspaceId}/finalize`);
+}
+
 /**
  * Get the API base URL for client-side fetch calls.
  * Use this for FormData uploads and other non-JSON requests.
@@ -223,6 +237,29 @@ export async function postFormData<T>(path: string, formData: FormData): Promise
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method: "POST",
     body: formData,
+  });
+  
+  if (!response.ok) {
+    const text = await response.text();
+    throw new ApiError(response.status, `API request failed for ${path}: ${response.status} - ${text}`);
+  }
+  
+  return (await response.json()) as T;
+}
+
+/**
+ * POST JSON to an API endpoint.
+ */
+export async function postJson<T>(path: string): Promise<T> {
+  if (!apiBaseUrl) {
+    throw new Error("API base URL is not configured. Set INTERNAL_API_BASE_URL (server) or NEXT_PUBLIC_API_BASE_URL (browser).");
+  }
+
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
   
   if (!response.ok) {

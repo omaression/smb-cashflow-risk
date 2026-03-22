@@ -26,6 +26,7 @@ def run_migrations():
     """Run ad-hoc migrations for missing columns."""
     migrations = [
         "ALTER TABLE import_file ADD COLUMN IF NOT EXISTS profiling_json TEXT",
+        "ALTER TABLE import_file ADD COLUMN IF NOT EXISTS raw_rows_json TEXT",
     ]
     with engine.connect() as conn:
         for migration in migrations:

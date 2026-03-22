@@ -11,6 +11,7 @@ from app.schemas import (
     TrialQualityProfileResponse,
     TrialWorkspaceStatusResponse,
 )
+from app.services.trial_ingestion import finalize_trial_workspace
 from app.services.trial_workspaces import create_preview_workspace, get_workspace
 
 router = APIRouter(prefix="/trial", tags=["trial"])
@@ -86,6 +87,41 @@ def trial_status(workspace_id: UUID, db: Session = Depends(get_db)) -> TrialWork
     if workspace is None:
         raise HTTPException(status_code=404, detail=f"trial workspace not found: {workspace_id}")
 
+    return TrialWorkspaceStatusResponse(
+        workspace_id=str(workspace.id),
+        label=workspace.label,
+        status=workspace.status,
+        source_type=workspace.source_type,
+        warning_count=workspace.warning_count,
+        data_quality_score=float(workspace.data_quality_score) if workspace.data_quality_score is not None else None,
+        confidence_score=float(workspace.confidence_score) if workspace.confidence_score is not None else None,
+        quality_profile=_quality_payload(workspace),
+    )
+
+
+@router.post("/{workspace_id}/finalize", response_model=TrialWorkspaceStatusResponse)
+def finalize_import(workspace_id: UUID, db: Session = Depends(get_db)) -> TrialWorkspaceStatusResponse:
+    """
+    Finalize a preview workspace and materialize the imported data.
+    
+    This processes all uploaded files and creates trial-scoped customer,
+    invoice, payment, and cash snapshot records.
+    """
+    workspace = get_workspace(db, workspace_id)
+    if workspace is None:
+        raise HTTPException(status_code=404, detail=f"trial workspace not found: {workspace_id}")
+    
+    if workspace.status not in ("preview_ready", "active"):
+        raise HTTPException(status_code=400, detail=f"workspace cannot be finalized in status: {workspace.status}")
+    
+    try:
+        results = finalize_trial_workspace(db, workspace_id)
+        # Refresh workspace after commit
+        db.expire_all()
+        workspace = get_workspace(db, workspace_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
     return TrialWorkspaceStatusResponse(
         workspace_id=str(workspace.id),
         label=workspace.label,
