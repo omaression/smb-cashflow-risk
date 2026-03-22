@@ -61,6 +61,7 @@ main {
 .grid { display: grid; gap: 16px; }
 .cards { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 .two-col { grid-template-columns: 1.5fr 1fr; }
+.two-col > * { min-width: 0; } /* Prevent overflow in grid items */
 
 /* ── Panel ────────────────────────────────────────────────────── */
 .panel {
