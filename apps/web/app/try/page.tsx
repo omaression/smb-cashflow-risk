@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/lib/workspace-context";
+import { postFormData } from "@/lib/api";
 
 type Step = "upload" | "mapping" | "validation" | "import";
 
@@ -90,17 +91,7 @@ export default function TryPage() {
         });
       }
 
-      const res = await fetch("/api/v1/trial/preview", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`Upload failed: ${res.status} ${text}`);
-      }
-
-      const data: ImportPreviewResponse = await res.json();
+      const data = await postFormData<ImportPreviewResponse>("/trial/preview", formData);
       setPreview(data);
       setStep("mapping");
     } catch (err) {
