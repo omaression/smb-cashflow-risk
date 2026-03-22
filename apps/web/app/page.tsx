@@ -29,6 +29,19 @@ export default function DashboardPage() {
             getTrialDashboardSummary(workspace.id),
             getTrialInvoiceRisk(workspace.id)
           ]);
+          
+          // If trial workspace has no data, fall back to demo
+          if ((s.open_invoice_count === 0 && s.total_ar === 0) || !s.top_risky_customers) {
+            const [demoSummary, demoInvoices] = await Promise.all([
+              getDashboardSummary(),
+              getInvoiceRisk()
+            ]);
+            setSummary(demoSummary);
+            setInvoices(demoInvoices);
+            // Show a notice that trial workspace is empty
+            return;
+          }
+          
           setSummary(s);
           setInvoices(i);
         } else {

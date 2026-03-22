@@ -85,11 +85,12 @@ export default function TryPage() {
     try {
       const formData = new FormData();
       const input = document.querySelector<HTMLInputElement>('input[type="file"]');
-      if (input && input.files) {
-        Array.from(input.files).forEach((file) => {
-          formData.append("files", file);
-        });
+      if (!input || !input.files || input.files.length === 0) {
+        throw new Error("No files selected. Please select files to upload.");
       }
+      Array.from(input.files).forEach((file) => {
+        formData.append("files", file);
+      });
 
       const data = await postFormData<ImportPreviewResponse>("/trial/preview", formData);
       setPreview(data);
@@ -190,7 +191,7 @@ export default function TryPage() {
                 <span className="filename">{file.filename}</span>
                 <span className="role-badge">{file.detected_role || "Unknown"}</span>
                 <span className="confidence">
-                  {file.detection_confidence !== null ? `${Math.round(file.detection_confidence * 100)}% confidence` : ""}
+                  {file.detection_confidence !== null ? `${Math.round(file.detection_confidence)}% confidence` : ""}
                 </span>
               </div>
 
@@ -299,23 +300,23 @@ export default function TryPage() {
           <div className="quality-grid">
             <div className="quality-card">
               <div className="label">Completeness</div>
-              <div className="score">{Math.round((q.completeness_score || 0) * 100)}%</div>
+              <div className="score">{Math.round(q.completeness_score || 0)}%</div>
             </div>
             <div className="quality-card">
               <div className="label">Consistency</div>
-              <div className="score">{Math.round((q.consistency_score || 0) * 100)}%</div>
+              <div className="score">{Math.round(q.consistency_score || 0)}%</div>
             </div>
             <div className="quality-card">
               <div className="label">Coverage</div>
-              <div className="score">{Math.round((q.coverage_score || 0) * 100)}%</div>
+              <div className="score">{Math.round(q.coverage_score || 0)}%</div>
             </div>
             <div className="quality-card">
               <div className="label">History depth</div>
-              <div className="score">{Math.round((q.history_depth_score || 0) * 100)}%</div>
+              <div className="score">{Math.round(q.history_depth_score || 0)}%</div>
             </div>
             <div className="quality-card">
               <div className="label">Sample size</div>
-              <div className="score">{Math.round((q.sample_size_score || 0) * 100)}%</div>
+              <div className="score">{Math.round(q.sample_size_score || 0)}%</div>
             </div>
           </div>
 
@@ -323,7 +324,7 @@ export default function TryPage() {
             <span className={`grade grade-${q.reliability_grade || "insufficient"}`}>
               Reliability: {(q.reliability_grade || "insufficient").toUpperCase()}
             </span>
-            <span className="overall-score">{Math.round((q.overall_confidence_score || 0) * 100)}%</span>
+            <span className="overall-score">{Math.round(q.overall_confidence_score || 0)}%</span>
           </div>
 
           {q.recommendations.length > 0 && (

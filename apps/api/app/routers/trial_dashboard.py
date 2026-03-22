@@ -38,11 +38,8 @@ def get_trial_summary(workspace_id: UUID, db: Session = Depends(get_db)):
         risky_invoice_count=summary.risky_invoice_count,
         top_risky_customers=[
             TopRiskyCustomer(
-                customer_name=c["customer_name"],
-                invoice_count=c["invoice_count"],
-                total_amount=c["total_amount"],
-                overdue_amount=c["overdue_amount"],
-                avg_risk_score=c["avg_risk_score"],
+                id=c["id"],
+                name=c["name"],
             )
             for c in summary.top_risky_customers
         ],

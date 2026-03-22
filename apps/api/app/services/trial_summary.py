@@ -89,9 +89,12 @@ def build_trial_dashboard_summary(session: Session, workspace: TrialWorkspace) -
     # Get top risky customers by invoice count and amount
     customer_risk: dict[str, dict[str, Any]] = {}
     for inv, score in scored_invoices:
+        customer_id = str(inv.customer_id) if inv.customer else "unknown"
         customer_name = inv.customer.name if inv.customer else "Unknown"
-        if customer_name not in customer_risk:
-            customer_risk[customer_name] = {
+        key = customer_id  # Use customer_id as key
+        if key not in customer_risk:
+            customer_risk[key] = {
+                "customer_id": customer_id,
                 "customer_name": customer_name,
                 "invoice_count": 0,
                 "total_amount": Decimal("0"),
@@ -99,11 +102,11 @@ def build_trial_dashboard_summary(session: Session, workspace: TrialWorkspace) -
                 "avg_risk_score": 0.0,
                 "risk_scores": [],
             }
-        customer_risk[customer_name]["invoice_count"] += 1
-        customer_risk[customer_name]["total_amount"] += inv.outstanding_amount
+        customer_risk[key]["invoice_count"] += 1
+        customer_risk[key]["total_amount"] += inv.outstanding_amount
         if inv.due_date < today:
-            customer_risk[customer_name]["overdue_amount"] += inv.outstanding_amount
-        customer_risk[customer_name]["risk_scores"].append(score.get("late_payment_probability", 0))
+            customer_risk[key]["overdue_amount"] += inv.outstanding_amount
+        customer_risk[key]["risk_scores"].append(score.get("late_payment_probability", 0))
     
     # Calculate average risk score and sort
     for name in customer_risk:
@@ -118,14 +121,11 @@ def build_trial_dashboard_summary(session: Session, workspace: TrialWorkspace) -
     
     top_risky_customers = [
         {
-            "customer_name": c["customer_name"],
-            "invoice_count": c["invoice_count"],
-            "total_amount": float(c["total_amount"]),
-            "overdue_amount": float(c["overdue_amount"]),
-            "avg_risk_score": round(c["avg_risk_score"], 2),
+            "id": str(c["customer_id"]) if "customer_id" in c else c["customer_name"],
+            "name": c["customer_name"],
         }
         for c in top_risky
-    ]
+    ][:3]  # Limit to top 3
     
     # Build cash projection from trial cash snapshots
     snapshots = list(

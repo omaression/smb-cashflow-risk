@@ -61,6 +61,7 @@ main {
 .grid { display: grid; gap: 16px; }
 .cards { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 .two-col { grid-template-columns: 1.5fr 1fr; }
+.two-col > * { min-width: 0; } /* Prevent overflow in grid items */
 
 /* ── Panel ────────────────────────────────────────────────────── */
 .panel {
@@ -310,6 +311,193 @@ code {
 }
 
 .site-footer a { color: var(--accent); }
+
+/* ── Sticky Footer Layout ──────────────────────────────────────── */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > .site-footer {
+  margin-top: auto;
+}
+
+/* ── Try Page Styles ─────────────────────────────────────────── */
+.step-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.step-actions .button:only-child {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Try Page Components ─────────────────────────────────────────── */
+.mapping-panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.mapping-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.mapping-header .filename {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.mapping-header .role-badge {
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.mapping-header .confidence {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.detection-reasons,
+.missing-fields,
+.ambiguity-warnings,
+.alternatives {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.detection-reasons .label,
+.missing-fields .label,
+.ambiguity-warnings .label,
+.alternatives .label {
+  font-weight: 600;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.label.warning {
+  color: var(--warning);
+}
+
+.detection-reasons ul,
+.missing-fields ul,
+.ambiguity-warnings ul,
+.alternatives ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.mapping-table {
+  margin-top: 8px;
+}
+
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.quality-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.quality-card .label {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  margin-bottom: 8px;
+}
+
+.quality-card .score {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.reliability-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.reliability-badge .grade {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.grade-grade-low {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.grade-grade-medium {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.grade-grade-high {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.grade-grade-insufficient {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+}
+
+.reliability-badge .overall-score {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.recommendations {
+  margin-top: 24px;
+}
+
+.recommendations h3 {
+  margin-bottom: 12px;
+  font-size: var(--text-base);
+}
+
+.recommendations ul {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.recommendations li {
+  margin-bottom: 8px;
+  color: var(--muted);
+}
 
 /* ── Animations ───────────────────────────────────────────────── */
 .ml-banner {

@@ -37,12 +37,26 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       try {
         const parsed = JSON.parse(stored);
         if (parsed.id) {
-          setWorkspace({
-            id: parsed.id,
-            label: parsed.label || "Trial Workspace",
-            status: parsed.status || "imported",
-            hasTrialData: true,
-          });
+          // Validate that the workspace still exists on the backend
+          fetch(`/api/v1/trial/${parsed.id}/status`)
+            .then((res) => {
+              if (res.ok) {
+                setWorkspace({
+                  id: parsed.id,
+                  label: parsed.label || "Trial Workspace",
+                  status: parsed.status || "imported",
+                  hasTrialData: true,
+                });
+              } else {
+                // Workspace no longer exists, clear localStorage
+                console.warn("Stored workspace no longer exists, clearing");
+                localStorage.removeItem(STORAGE_KEY);
+              }
+            })
+            .catch(() => {
+              // Network error, keep stored workspace but log warning
+              console.warn("Failed to validate stored workspace");
+            });
         }
       } catch {
         localStorage.removeItem(STORAGE_KEY);
@@ -53,7 +67,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const activateWorkspace = useCallback(async (workspaceId: string, label?: string) => {
     setIsLoading(true);
     try {
-      // Fetch workspace status from API
+      // Fetch workspace status from API to validate it exists
       const res = await fetch(`/api/v1/trial/${workspaceId}/status`);
       if (res.ok) {
         const data = await res.json();
@@ -65,8 +79,19 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         };
         setWorkspace(ws);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(ws));
+      } else if (res.status === 404) {
+        // Workspace not found, clear localStorage and stay in demo mode
+        console.warn("Workspace not found, staying in demo mode");
+        localStorage.removeItem(STORAGE_KEY);
+        setWorkspace({
+          id: null,
+          label: "Demo",
+          status: "demo",
+          hasTrialData: false,
+        });
       } else {
-        // If fetch fails, still activate with basic info
+        // Other error, activate with basic info but log warning
+        console.warn("Failed to fetch workspace status, activating anyway");
         const ws: Workspace = {
           id: workspaceId,
           label: label || "Trial Workspace",
@@ -78,15 +103,14 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       }
     } catch (err) {
       console.error("Failed to activate workspace:", err);
-      // Activate anyway with basic info
-      const ws: Workspace = {
-        id: workspaceId,
-        label: label || "Trial Workspace",
-        status: "imported",
-        hasTrialData: true,
-      };
-      setWorkspace(ws);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(ws));
+      // Don't activate on error - stay in demo mode
+      localStorage.removeItem(STORAGE_KEY);
+      setWorkspace({
+        id: null,
+        label: "Demo",
+        status: "demo",
+        hasTrialData: false,
+      });
     } finally {
       setIsLoading(false);
     }
