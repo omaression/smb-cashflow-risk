@@ -203,3 +203,32 @@ export async function getTrialDashboardSummary(workspaceId: string): Promise<Das
 export async function getTrialInvoiceRisk(workspaceId: string): Promise<InvoiceRiskItem[]> {
   return fetchJson<InvoiceRiskItem[]>(`/trial/${workspaceId}/invoices/risk`);
 }
+
+/**
+ * Get the API base URL for client-side fetch calls.
+ * Use this for FormData uploads and other non-JSON requests.
+ */
+export function getApiBaseUrl(): string {
+  return apiBaseUrl;
+}
+
+/**
+ * Post FormData to an API endpoint.
+ */
+export async function postFormData<T>(path: string, formData: FormData): Promise<T> {
+  if (!apiBaseUrl) {
+    throw new Error("API base URL is not configured. Set INTERNAL_API_BASE_URL (server) or NEXT_PUBLIC_API_BASE_URL (browser).");
+  }
+
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: "POST",
+    body: formData,
+  });
+  
+  if (!response.ok) {
+    const text = await response.text();
+    throw new ApiError(response.status, `API request failed for ${path}: ${response.status} - ${text}`);
+  }
+  
+  return (await response.json()) as T;
+}
