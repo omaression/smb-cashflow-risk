@@ -1,5 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Navbar } from "@/components/navbar";
+import { WorkspaceProvider } from "@/lib/workspace-context";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {

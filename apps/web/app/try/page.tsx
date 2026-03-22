@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useWorkspace } from "@/lib/workspace-context";
 
 type Step = "upload" | "mapping" | "validation" | "import";
 
@@ -60,6 +62,8 @@ export default function TryPage() {
   const [preview, setPreview] = useState<ImportPreviewResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { activateWorkspace } = useWorkspace();
 
   const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -112,16 +116,17 @@ export default function TryPage() {
     setError(null);
 
     try {
-      // In the real implementation, this would call a materialize endpoint
-      // For now, we simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setStep("import");
+      // Activate the workspace
+      await activateWorkspace(preview.workspace_id, "Trial Workspace");
+      
+      // Redirect to dashboard
+      router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Import failed unexpectedly");
     } finally {
       setIsLoading(false);
     }
-  }, [preview]);
+  }, [preview, activateWorkspace, router]);
 
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -355,13 +360,17 @@ export default function TryPage() {
         <div className="try-import">
           <h2>Import complete</h2>
           <p className="muted">
-            Your data has been imported into an isolated trial workspace. You can now view the dashboard, risk queue,
-            and forecast for this dataset.
+            Your data has been imported into an isolated trial workspace. The dashboard now shows your imported data instead of demo data.
           </p>
+
+          <div className="success-message">
+            <span className="checkmark">✓</span>
+            <span>Workspace activated successfully</span>
+          </div>
 
           <div className="next-steps">
             <Link className="button primary" href="/">
-              View dashboard
+              View your dashboard
             </Link>
           </div>
         </div>
@@ -643,6 +652,25 @@ export default function TryPage() {
 
         .next-steps {
           margin-top: 24px;
+        }
+
+        .success-message {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px;
+          background: var(--success-bg);
+          border-radius: var(--radius-md);
+          margin: 24px 0;
+        }
+
+        .success-message .checkmark {
+          font-size: 1.5rem;
+          color: var(--success);
+        }
+
+        .success-message span:last-child {
+          color: #bbf7d0;
         }
 
         @media (max-width: 768px) {
