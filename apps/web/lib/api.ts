@@ -1,4 +1,10 @@
-const browserApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+// API base URL resolution:
+// 1. Server-side: INTERNAL_API_BASE_URL or API_BASE_URL (for SSR)
+// 2. Client-side: NEXT_PUBLIC_API_BASE_URL (set in Vercel)
+// 3. Fallback: production API URL
+const PRODUCTION_API_URL = "https://api.cashflow.omaression.com/api/v1";
+
+const browserApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? PRODUCTION_API_URL;
 const serverApiBaseUrl = process.env.INTERNAL_API_BASE_URL ?? process.env.API_BASE_URL;
 
 const apiBaseUrl = serverApiBaseUrl ?? browserApiBaseUrl;
@@ -186,4 +192,14 @@ export async function getCustomerDetail(customerId: string): Promise<CustomerDet
 
 export async function getMlOverview(): Promise<MlOverview> {
   return fetchJson<MlOverview>("/ml/overview");
+}
+
+// Trial-scoped endpoints
+
+export async function getTrialDashboardSummary(workspaceId: string): Promise<DashboardSummary> {
+  return fetchJson<DashboardSummary>(`/trial/${workspaceId}/summary`);
+}
+
+export async function getTrialInvoiceRisk(workspaceId: string): Promise<InvoiceRiskItem[]> {
+  return fetchJson<InvoiceRiskItem[]>(`/trial/${workspaceId}/invoices/risk`);
 }
