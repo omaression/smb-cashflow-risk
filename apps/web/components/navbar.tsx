@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import "./navbar.css";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -44,52 +45,6 @@ export function Navbar() {
           Summary JSON
         </a>
       </div>
-      <style jsx>{`
-        .navbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 24px;
-          background: var(--surface);
-          border-bottom: 1px solid var(--border);
-        }
-        .navbar-brand a {
-          font-weight: 700;
-          font-size: 1.1rem;
-          color: var(--text);
-          text-decoration: none;
-        }
-        .navbar-links {
-          display: flex;
-          gap: 16px;
-        }
-        .nav-link {
-          color: var(--muted);
-          text-decoration: none;
-          font-size: 0.9rem;
-          padding: 6px 12px;
-          border-radius: var(--radius-sm);
-          transition: color 0.16s ease, background 0.16s ease;
-        }
-        .nav-link:hover {
-          color: var(--text);
-          background: rgba(255, 255, 255, 0.05);
-        }
-        .nav-link.active {
-          color: var(--accent);
-          background: var(--primary-fog);
-        }
-        @media (max-width: 768px) {
-          .navbar {
-            flex-direction: column;
-            gap: 12px;
-          }
-          .navbar-links {
-            flex-wrap: wrap;
-            justify-content: center;
-          }
-        }
-      `}</style>
     </nav>
   );
 }
