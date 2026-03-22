@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.database import Base, engine
+from app.database import Base, engine, run_migrations
 from app.models import (  # noqa: F401 — ensure models registered
     Customer,
     DailyCashSnapshot,
@@ -34,6 +34,8 @@ from app.routers.trial_dashboard import router as trial_dashboard_router
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
+        # Run ad-hoc migrations for missing columns
+        run_migrations()
         Base.metadata.create_all(bind=engine)
     except Exception:
         logger.warning("Could not create tables on startup (expected in test/CI)")
