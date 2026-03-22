@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useWorkspace } from "@/lib/workspace-context";
 
 type Step = "upload" | "mapping" | "validation" | "import";
 
@@ -55,6 +57,8 @@ interface ImportPreviewResponse {
 }
 
 export default function TryPage() {
+  const router = useRouter();
+  const { activateWorkspace } = useWorkspace();
   const [step, setStep] = useState<Step>("upload");
   const [files, setFiles] = useState<FileStatus[]>([]);
   const [preview, setPreview] = useState<ImportPreviewResponse | null>(null);
@@ -112,16 +116,17 @@ export default function TryPage() {
     setError(null);
 
     try {
-      // In the real implementation, this would call a materialize endpoint
-      // For now, we simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setStep("import");
+      // Activate the workspace in the context
+      await activateWorkspace(preview.workspace_id, "Trial Workspace");
+      
+      // Redirect to dashboard which will now show trial data
+      router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Import failed unexpectedly");
     } finally {
       setIsLoading(false);
     }
-  }, [preview]);
+  }, [preview, activateWorkspace, router]);
 
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;

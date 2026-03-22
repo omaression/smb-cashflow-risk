@@ -187,3 +187,13 @@ export async function getCustomerDetail(customerId: string): Promise<CustomerDet
 export async function getMlOverview(): Promise<MlOverview> {
   return fetchJson<MlOverview>("/ml/overview");
 }
+
+// Trial-scoped endpoints
+
+export async function getTrialDashboardSummary(workspaceId: string): Promise<DashboardSummary> {
+  return fetchJson<DashboardSummary>(`/trial/${workspaceId}/summary`);
+}
+
+export async function getTrialInvoiceRisk(workspaceId: string): Promise<InvoiceRiskItem[]> {
+  return fetchJson<InvoiceRiskItem[]>(`/trial/${workspaceId}/invoices/risk`);
+}
