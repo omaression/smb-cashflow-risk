@@ -2,28 +2,27 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/navbar";
-import { WorkspaceProvider } from "@/lib/workspace-context";
-import type { ReactNode } from "react";
+import { Providers } from "./providers";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SMB Cash Flow Risk",
-  description: "Early warning dashboard for short-term liquidity pressure, receivables risk, and collections prioritization.",
-  openGraph: {
-    title: "SMB Cash Flow Risk",
-    description: "Early warning dashboard for SMB receivables risk and collections prioritization.",
-    type: "website",
-    siteName: "SMB Cash Flow Risk",
-  },
+  title: "SMB Cashflow Risk",
+  description: "Cashflow risk cockpit for small and medium businesses",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>
-        {children}
-        <footer className="site-footer">
-          Built by <a href="https://omaression.com" target="_blank" rel="noreferrer">Omar</a> &middot; {new Date().getFullYear()}
-        </footer>
+      <body className={inter.className}>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
