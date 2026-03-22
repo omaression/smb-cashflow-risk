@@ -16,6 +16,11 @@ from app.models import (  # noqa: F401 — ensure models registered
     Invoice,
     Payment,
     TrialWorkspace,
+    # Trial-scoped data models
+    TrialCustomer,
+    TrialInvoice,
+    TrialPayment,
+    TrialCashSnapshot,
 )
 
 logger = logging.getLogger(__name__)

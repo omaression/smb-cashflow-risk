@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/lib/workspace-context";
-import { postFormData } from "@/lib/api";
+import { postFormData, finalizeTrialImport } from "@/lib/api";
 
 type Step = "upload" | "mapping" | "validation" | "import";
 
@@ -107,6 +107,9 @@ export default function TryPage() {
     setError(null);
 
     try {
+      // Finalize the workspace - this materializes the imported data
+      await finalizeTrialImport(preview.workspace_id);
+      
       // Activate the workspace in the context
       await activateWorkspace(preview.workspace_id, "Trial Workspace");
       

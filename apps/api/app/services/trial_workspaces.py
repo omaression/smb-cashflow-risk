@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import csv
 import json
 from decimal import Decimal
+from io import StringIO
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -9,6 +11,15 @@ from sqlalchemy.orm import Session
 from app.ingestion.file_roles import detect_file_role
 from app.ingestion.role_mapping import suggest_field_mappings
 from app.models.trial_workspace import DataQualityProfile, ImportFile, ImportJob, TrialWorkspace
+
+
+def _parse_csv_rows(contents: bytes) -> list[dict[str, str]]:
+    """Parse CSV contents into a list of row dictionaries."""
+    text = contents.decode("utf-8-sig", errors="replace")
+    reader = csv.DictReader(StringIO(text))
+    if not reader.fieldnames:
+        return []
+    return list(reader)
 
 
 def create_preview_workspace(session: Session, *, uploads: list[tuple[str, bytes]]) -> TrialWorkspace:
@@ -44,7 +55,7 @@ def create_preview_workspace(session: Session, *, uploads: list[tuple[str, bytes
     session.add(import_job)
     session.flush()
 
-    for (filename, _contents), detection in zip(uploads, detections, strict=False):
+    for (filename, contents), detection in zip(uploads, detections, strict=False):
         role = detection.role or "unknown"
         mapping = suggest_field_mappings(role=role, headers=detection.headers)
         field_payload = {
@@ -60,6 +71,10 @@ def create_preview_workspace(session: Session, *, uploads: list[tuple[str, bytes
         field_payload["_alternatives"] = [
             {"role": role, "confidence": score} for role, score in detection.alternatives
         ]
+        
+        # Parse and store raw rows for finalize step
+        raw_rows = _parse_csv_rows(contents)
+        
         session.add(
             ImportFile(
                 import_job_id=import_job.id,
@@ -80,6 +95,7 @@ def create_preview_workspace(session: Session, *, uploads: list[tuple[str, bytes
                         "required_missing": mapping.required_missing,
                     }
                 ),
+                raw_rows_json=json.dumps(raw_rows) if raw_rows else None,
             )
         )
 
