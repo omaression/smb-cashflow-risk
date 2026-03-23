@@ -2,6 +2,17 @@
 Comprehensive file role detection with header matching, content patterns, and fuzzy matching.
 
 Supports real-world AR exports from QuickBooks, NetSuite, SAP, Oracle, IBM, and other ERP systems.
+
+ATTRIBUTION:
+- Content pattern detection approach inspired by csv-detective (github.com/datagouv/csv-detective)
+- Levenshtein distance algorithm is a standard dynamic programming implementation
+- AR aging column names compiled from QuickBooks, NetSuite, SAP, Oracle, IBM ERP documentation
+- No code was copied from external sources; this implementation is original but methodology-informed
+
+Research sources:
+- csv-detective: Uses regex + content analysis for ~95% column type detection accuracy
+- US Chamber: Standard AR aging report format (Customer, 0-30, 31-60, 61-90, Over 90)
+- NetSuite/SAP/Oracle documentation: Column name variations for exports
 """
 
 from __future__ import annotations
