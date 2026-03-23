@@ -172,6 +172,23 @@ export default function TryPage() {
               {isLoading ? "Analyzing..." : "Analyze files"}
             </button>
           </div>
+
+          <div className="scoring-requirements">
+            <h3>What we need to score your data</h3>
+            <p className="muted">
+              For accurate risk scoring and cash forecasting, your file should include columns that help us identify:
+            </p>
+            <ul>
+              <li><strong>Who owes you money</strong> — customer or account identifiers (name, ID, or account number)</li>
+              <li><strong>How much is owed</strong> — outstanding balance, amount due, or remaining amount per invoice</li>
+              <li><strong>When payment is expected</strong> — invoice date or due date so we can calculate aging</li>
+              <li><strong>Invoice identifiers</strong> — invoice number or reference for tracking</li>
+            </ul>
+            <p className="muted small">
+              Files with aging buckets (Current, 1-30, 31-60, 61-90, Over 90) work well for accounts receivable reports.
+              Payment history files help improve confidence scores.
+            </p>
+          </div>
         </div>
       );
     }
@@ -277,9 +294,6 @@ export default function TryPage() {
           ))}
 
           <div className="step-actions">
-            <button className="button secondary" onClick={() => setStep("upload")} disabled={isLoading}>
-              Back
-            </button>
             <button className="button primary" onClick={() => setStep("validation")} disabled={isLoading}>
               Continue to validation
             </button>
@@ -338,14 +352,23 @@ export default function TryPage() {
             </div>
           )}
 
-          <div className="step-actions">
-            <button className="button secondary" onClick={() => setStep("mapping")} disabled={isLoading}>
-              Back
-            </button>
-            <button className="button primary" onClick={handleConfirmImport} disabled={isLoading}>
-              {isLoading ? "Importing..." : "Import & score"}
-            </button>
-          </div>
+          {/* Check if any file has missing required fields */}
+          {preview.files.some(f => f.required_missing.length > 0) ? (
+            <div className="step-actions">
+              <Link className="button primary" href="/">
+                Back to demo
+              </Link>
+            </div>
+          ) : (
+            <div className="step-actions">
+              <button className="button secondary" onClick={() => setStep("mapping")} disabled={isLoading}>
+                Back
+              </button>
+              <button className="button primary" onClick={handleConfirmImport} disabled={isLoading}>
+                {isLoading ? "Importing..." : "Import & score"}
+              </button>
+            </div>
+          )}
         </div>
       );
     }

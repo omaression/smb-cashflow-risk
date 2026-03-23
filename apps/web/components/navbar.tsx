@@ -16,6 +16,9 @@ export function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
+        <a href="https://info.omaression.com" target="_blank" rel="noopener noreferrer" className="logo-link">
+          <span className="logo-icon"> O </span>
+        </a>
         <Link href="/">SMB Cashflow</Link>
       </div>
       <div className="navbar-links">

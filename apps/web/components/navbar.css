@@ -10,18 +10,46 @@
 }
 
 .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
-.navbar-brand a {
+.logo-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--accent), #818cf8);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: white;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.logo-link:hover .logo-icon {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.navbar-brand a:not(.logo-link) {
   color: var(--text);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
-.navbar-brand a:hover {
+.navbar-brand a:not(.logo-link):hover {
   color: var(--accent);
 }
 

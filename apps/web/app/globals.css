@@ -499,6 +499,45 @@ body > .site-footer {
   color: var(--muted);
 }
 
+.scoring-requirements {
+  margin-top: 32px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.scoring-requirements h3 {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.scoring-requirements ul {
+  margin: 0 0 16px 0;
+  padding-left: 24px;
+}
+
+.scoring-requirements li {
+  margin-bottom: 10px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.scoring-requirements li strong {
+  color: var(--text);
+}
+
+.scoring-requirements .muted {
+  color: var(--muted);
+  margin: 0;
+}
+
+.scoring-requirements .muted.small {
+  font-size: var(--text-sm);
+  margin-top: 12px;
+}
+
 /* ── Animations ───────────────────────────────────────────────── */
 .ml-banner {
   display: flex;
