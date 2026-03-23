@@ -9,7 +9,8 @@ A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next
 - explain risk signals and recommend collections actions
 - project near-term cash balances
 - expose an MVP dashboard for quick review
-- surface ML evidence, benchmark context, and native-readiness status without overclaiming runtime maturity
+- surface ML evidence, benchmark context, and native-readiness status
+- **BYOD trial workspace**: upload your own receivables data and get immediate risk insights with data-quality scoring
 
 ## Stack
 - **Backend:** FastAPI, SQLAlchemy, PostgreSQL, Pydantic, pytest
@@ -146,8 +147,16 @@ On current native sample data, this produces a workflow-demo artifact rather tha
 - done: ML evidence API endpoints, runtime scoring provenance in the UI, and an ML evidence page are in place
 - outcome: the project now explains what is live, what is benchmark evidence, and why native learned runtime remains deferred
 
-### Phase 5 — next release direction
-- next: bring-your-own-data trial flow (`v0.5.0`) so a company can try the product with its own CSV exports without manual API work
+### Phase 5 — v0.5.0 Bring Your Own Data
+- done: trial workspace foundation with isolated data scoping
+- done: file-role detection for CSV/XLSX uploads (invoices, payments, customers, cash snapshots, unpaid-invoice exports)
+- done: schema mapping with confidence scores and user review flow
+- done: data-quality and reliability scoring with improvement recommendations
+- done: `/try` upload wizard with preview and import workflow
+- outcome: users can now upload their own receivables data, review detected mappings, see quality scores, and import into an isolated trial workspace for immediate risk insights
+
+### Phase 6 — next release direction
+- next: expand BYOD import capabilities and polish UX based on user feedback
 
 ## Development note
 This public repo documents outcomes, usage, architecture, decisions, and limitations.

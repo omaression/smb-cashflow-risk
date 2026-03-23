@@ -25,8 +25,8 @@
 }
 
 .logo-icon {
-  width: 28px;
-  height: 28px;
+  width: clamp(28px, 5vw, 36px);
+  height: clamp(28px, 5vw, 36px);
   color: var(--text);
   transition: color 0.15s ease, transform 0.15s ease;
 }
