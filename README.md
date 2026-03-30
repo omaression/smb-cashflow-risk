@@ -4,6 +4,8 @@ A full-stack portfolio project for SMB cash flow risk, built with FastAPI + Next
 
 **Live:** [cashflow.omaression.com](https://cashflow.omaression.com) &middot; **API:** [api.cashflow.omaression.com/docs](https://api.cashflow.omaression.com/docs)
 
+> **Note:** The API is hosted on Render's free tier. If the live site feels unresponsive on first load, give it 30–60 seconds to cold-start.
+
 ## What this project does
 - score unpaid invoices for late-payment risk
 - explain risk signals and recommend collections actions
