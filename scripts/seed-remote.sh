@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Seed demo data against a remote (hosted) API.
-# Usage: ./scripts/seed-remote.sh https://api.cashflow.omaression.com
+# Usage: ./scripts/seed-remote.sh https://cashflow-api.omaression.com
 set -euo pipefail
 
 API_BASE="${1:?Usage: $0 <api-base-url>}"
@@ -12,7 +12,7 @@ echo "Seeding demo data against: ${API}"
 for entity in customers invoices payments cash_snapshots; do
   file="${DATA_DIR}/sample_${entity}.csv"
   if [ ! -f "$file" ]; then
-    echo "  SKIP ${entity} — file not found: ${file}"
+    echo "  SKIP ${entity} - file not found: ${file}"
     continue
   fi
   echo "  Loading ${entity}..."

@@ -1,4 +1,6 @@
-# Release Notes — `v0.3.0`
+# Release Notes - `v0.3.0`
+
+> Historical release note. The deployment section records the v0.3.0 launch architecture at that time. Current production uses `https://cashflow-api.omaression.com` for the API and VPS-hosted PostgreSQL.
 
 ## Summary
 `smb-cashflow-risk` `v0.3.0` is the first **portfolio-grade MVP** release.
@@ -26,11 +28,11 @@ This release delivers a complete end-to-end demo experience for SMB receivables 
 - UI polish: footer branding, chart value labels, cleaned copy, critical risk badge
 
 ## Deployment
-```
-cashflow.omaression.com       → Vercel (Next.js frontend)
-api.cashflow.omaression.com   → Render (FastAPI API)
-Render managed PostgreSQL      → internal connection
-Cloudflare                     → DNS + proxy
+```text
+cashflow.omaression.com       -> Vercel (Next.js frontend)
+api.cashflow.omaression.com   -> Render (FastAPI API, historical)
+Render managed PostgreSQL     -> internal connection (historical)
+Cloudflare                    -> DNS + proxy
 ```
 
 ## What this release is

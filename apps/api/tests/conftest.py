@@ -68,3 +68,12 @@ def seed_data(db_session: Session) -> Generator[Session, None, None]:
     ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
     ingest_csv_file("cash_snapshots", (DATA_DIR / "sample_cash_snapshots.csv").read_bytes(), db_session)
     yield db_session
+
+
+@pytest.fixture()
+def seed_data_without_cash_snapshots(db_session: Session) -> Generator[Session, None, None]:
+    """Load sample portfolio data without daily cash snapshots."""
+    ingest_csv_file("customers", (DATA_DIR / "sample_customers.csv").read_bytes(), db_session)
+    ingest_csv_file("invoices", (DATA_DIR / "sample_invoices.csv").read_bytes(), db_session)
+    ingest_csv_file("payments", (DATA_DIR / "sample_payments.csv").read_bytes(), db_session)
+    yield db_session

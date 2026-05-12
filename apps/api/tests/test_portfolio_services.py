@@ -26,3 +26,15 @@ def test_build_dashboard_summary_uses_ranked_portfolio(seed_data) -> None:
         {"id": "CUST-002", "name": "Riverbend Industrial Supply"},
     ]
     assert set(summary.projected_cash_balances.keys()) == {"7", "14", "30"}
+
+
+def test_build_dashboard_summary_returns_empty_projected_balances_without_cash_snapshots(
+    seed_data_without_cash_snapshots,
+) -> None:
+    summary = build_dashboard_summary(seed_data_without_cash_snapshots)
+
+    assert float(summary.total_ar) == 31410.0
+    assert float(summary.overdue_ar) == 31410.0
+    assert summary.open_invoice_count == 3
+    assert summary.risky_invoice_count == 2
+    assert summary.projected_cash_balances == {}
