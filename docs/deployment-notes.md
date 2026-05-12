@@ -3,19 +3,26 @@
 ## Production deployment architecture
 
 ```
-cashflow.omaression.com       → Vercel (Next.js frontend)
-api.cashflow.omaression.com   → Render (FastAPI API)
-Render managed PostgreSQL      → internal connection
-Cloudflare                     → DNS + proxy
+cashflow.omaression.com       -> Vercel (Next.js frontend)
+cashflow-api.omaression.com   -> Cloudflare Tunnel -> VPS FastAPI API
+VPS PostgreSQL                -> Docker volume at /mnt/volume-1/data/smb-cashflow-risk/postgres
+Cloudflare                    -> DNS + API tunnel routing
 ```
 
 - **Frontend** deployed to Vercel from `apps/web/`
-- **API** deployed to Render via Docker from `apps/api/Dockerfile`
-- **Database** provisioned as Render managed PostgreSQL (starter plan)
-- **Render web service** kept as a backup frontend deployment option
+- **API** served at `https://cashflow-api.omaression.com/api/v1`
+- **API docs** served at `https://cashflow-api.omaression.com/docs`
+- **Database** is VPS-hosted PostgreSQL in a private Docker network and persisted at `/mnt/volume-1/data/smb-cashflow-risk/postgres`
+- **API to database host** is `smb-cashflow-risk-postgres`
+- **Render-specific instructions** live in `docs/deploy-render.md` and are legacy or backup-specific
 - **CORS** configured via `ALLOWED_ORIGINS` environment variable on the API
 
-See `docs/deploy-render.md` for step-by-step deployment instructions.
+See `docs/deploy-vps-cloudflare.md` for current production deployment instructions. See `docs/deploy-render.md` only for the legacy Render-specific path.
+
+## Canonical API hostname
+`https://cashflow-api.omaression.com` is the canonical production API hostname.
+
+The previous hostname, `https://api.cashflow.omaression.com`, is deprecated and should not be used in app environment variables. It was replaced to avoid the multi-level subdomain pattern under Cloudflare Universal SSL. The current first-level subdomain, `cashflow-api.omaression.com`, is the supported production API hostname.
 
 ## Local containerized stack
 This project can also run as a 3-service Docker stack:
@@ -38,7 +45,7 @@ This imports sample CSV files from `data/raw/` through the API import endpoint.
 
 ### Seed a hosted deployment
 ```bash
-./scripts/seed-remote.sh https://api.cashflow.omaression.com
+./scripts/seed-remote.sh https://cashflow-api.omaression.com
 ```
 
 ### Endpoints
@@ -61,22 +68,23 @@ This imports sample CSV files from `data/raw/` through the API import endpoint.
 - built from `apps/web/Dockerfile`
 - uses `NEXT_PUBLIC_API_BASE_URL` for browser-visible links
 - uses `INTERNAL_API_BASE_URL` for server-side API calls
+- production value for both is `https://cashflow-api.omaression.com/api/v1`
 - uses Next.js standalone output in the runner image
 - serves production build on port 3000
 
-## Requirements
+## Local requirements
 - Docker Engine 24+ and Docker Compose v2
 - No local Python or Node.js installation needed
 - `curl` is required on the host to run `scripts/seed-docker.sh`
 - The `str | None` union syntax in Python source requires Python 3.10+; the container uses 3.12 so this is handled automatically
 
 ## Production considerations
-This stack is good for local demos and portfolio evaluation. Before scaling beyond portfolio use, consider:
+The local Docker stack is good for demos and portfolio evaluation. Current production runs the API and PostgreSQL on a VPS behind Cloudflare Tunnel. Before scaling beyond portfolio use, consider:
 - migration workflow (Alembic or equivalent)
 - persistent secrets handling
 - health/readiness endpoints for container orchestration
-- reverse proxy / TLS termination
-- non-default credentials and managed Postgres
+- backup restore drills
+- non-default credentials and private database networking
 
 ## Smoke checks
 After startup:
