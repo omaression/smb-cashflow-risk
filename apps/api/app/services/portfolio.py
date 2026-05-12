@@ -12,6 +12,7 @@ from app.services.forecast import SUPPORTED_HORIZONS, build_cash_forecast
 from app.services.risk import score_invoice
 
 OPEN_INVOICE_STATUSES = {"sent", "partially_paid"}
+MISSING_CASH_SNAPSHOTS_ERROR = "cash forecast unavailable: no cash snapshots loaded"
 
 
 @dataclass(frozen=True)
@@ -110,7 +111,13 @@ def build_dashboard_summary(session: Session) -> DashboardSummary:
 
     projected_cash_balances: dict[str, float] = {}
     for horizon in sorted(SUPPORTED_HORIZONS):
-        forecast = build_cash_forecast(session, horizon_days=horizon, scenario="base")
+        try:
+            forecast = build_cash_forecast(session, horizon_days=horizon, scenario="base")
+        except ValueError as exc:
+            if str(exc) == MISSING_CASH_SNAPSHOTS_ERROR:
+                projected_cash_balances = {}
+                break
+            raise
         projected_cash_balances[str(horizon)] = float(forecast.series[0].projected_balance)
 
     return DashboardSummary(
