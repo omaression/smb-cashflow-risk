@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getBrowserApiLinks } from "@/lib/api";
 import "./navbar.css";
 
 export function Navbar() {
   const pathname = usePathname();
+  const { docs, summary } = getBrowserApiLinks();
 
   const isActive = (path: string) => {
     if (path === "/" && pathname === "/") return true;
@@ -39,22 +41,16 @@ export function Navbar() {
         <Link href="/try" className={isActive("/try") ? "nav-link active" : "nav-link"}>
           Try BYOD
         </Link>
-        <a
-          href="https://api.cashflow.omaression.com/docs"
-          className="nav-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          API Docs
-        </a>
-        <a
-          href="https://api.cashflow.omaression.com/api/v1/dashboard/summary"
-          className="nav-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Summary JSON
-        </a>
+        {docs ? (
+          <a href={docs} className="nav-link" target="_blank" rel="noopener noreferrer">
+            API Docs
+          </a>
+        ) : null}
+        {summary ? (
+          <a href={summary} className="nav-link" target="_blank" rel="noopener noreferrer">
+            Summary JSON
+          </a>
+        ) : null}
       </div>
     </nav>
   );
