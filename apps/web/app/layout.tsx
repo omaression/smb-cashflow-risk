@@ -7,6 +7,10 @@ import { Navbar } from "@/components/navbar";
 export const metadata: Metadata = {
   title: "SMB Cash Flow Risk",
   description: "Early warning dashboard for short-term liquidity pressure, receivables risk, and collections prioritization.",
+  // Demo app with seeded data — must stay out of search indexes (Google had
+  // indexed /invoices/INV-1002). Paired with the X-Robots-Tag header in
+  // next.config.ts; robots.txt must keep ALLOWING crawls so bots can see these.
+  robots: { index: false },
   openGraph: {
     title: "SMB Cash Flow Risk",
     description: "Early warning dashboard for SMB receivables risk and collections prioritization.",
